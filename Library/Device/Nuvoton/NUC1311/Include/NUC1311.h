@@ -85,10 +85,7 @@ typedef enum IRQn
     UART1_IRQn                = 13,       /*!< UART1 Interrupt                                      */
     SPI0_IRQn                 = 14,       /*!< SPI0 Interrupt                                       */
     UART3_IRQn                = 15,       /*!< UART3 Interrupt                                      */
-    UART4_IRQn                = 16,       /*!< UART4 Interrupt                                      */
-    UART5_IRQn                = 17,       /*!< UART5 Interrupt                                      */
     I2C0_IRQn                 = 18,       /*!< I2C0 Interrupt                                       */
-    I2C1_IRQn                 = 19,       /*!< I2C1 Interrupt                                       */
     CAN0_IRQn                 = 20,       /*!< CAN0 Interrupt                                       */
     CAN1_IRQn                 = 21,       /*!< CAN1 Interrupt                                       */
     PWM0_IRQn                 = 22,       /*!< PWM0 Interrupt                                       */
@@ -1448,9 +1445,6 @@ typedef struct
      * |[8]     |I2C0_EN   |I2C0 Clock Enable Control
      * |        |          |0 = I2C0 clock Disabled.
      * |        |          |1 = I2C0 clock Enabled.
-     * |[9]     |I2C1_EN   |I2C1 Clock Enable Control
-     * |        |          |0 = I2C1 clock Disabled.
-     * |        |          |1 = I2C1 clock Enabled.
      * |[12]    |SPI0_EN   |SPI0 Clock Enable Control
      * |        |          |0 = SPI0 clock Disabled.
      * |        |          |1 = SPI0 clock Enabled.
@@ -1677,12 +1671,6 @@ typedef struct
      * |[8]     |UART3_EN  |UART3 Clock Enable Bit
      * |        |          |0 = UART3 clock Disabled.
      * |        |          |1 = UART3 clock Enabled.
-     * |[9]     |UART4_EN  |UART4 Clock Enable Bit
-     * |        |          |0 = UART4 clock Disabled.
-     * |        |          |1 = UART4 clock Enabled.
-     * |[10]    |UART5_EN  |UART5 Clock Enable Bit
-     * |        |          |0 = UART5 clock Disabled.
-     * |        |          |1 = UART5 clock Enabled.
      * |[16]    |PWM0_EN   |PWM0 Clock Enable Bit
      * |        |          |0 = PWM0 clock Disabled.
      * |        |          |1 = PWM0 clock Enabled.
@@ -1838,9 +1826,6 @@ typedef struct
 #define CLK_APBCLK_SPI0_EN_Pos               12                                   /*!< CLK_T::APBCLK: SPI0_EN Position */
 #define CLK_APBCLK_SPI0_EN_Msk               (1ul << CLK_APBCLK_SPI0_EN_Pos)      /*!< CLK_T::APBCLK: SPI0_EN Mask */
 
-#define CLK_APBCLK_I2C1_EN_Pos               9                                    /*!< CLK_T::APBCLK: I2C1_EN Position */
-#define CLK_APBCLK_I2C1_EN_Msk               (1ul << CLK_APBCLK_I2C1_EN_Pos)      /*!< CLK_T::APBCLK: I2C1_EN Mask */
-
 #define CLK_APBCLK_I2C0_EN_Pos               8                                    /*!< CLK_T::APBCLK: I2C0_EN_ Position */
 #define CLK_APBCLK_I2C0_EN_Msk               (1ul << CLK_APBCLK_I2C0_EN_Pos)      /*!< CLK_T::APBCLK: I2C0_EN_ Mask */
 
@@ -1868,12 +1853,6 @@ typedef struct
 
 #define CLK_APBCLK1_PWM0_EN_Pos              16                                   /*!< CLK_T::APBCLK1: PWM0_EN Position */
 #define CLK_APBCLK1_PWM0_EN_Msk              (1ul << CLK_APBCLK1_PWM0_EN_Pos)     /*!< CLK_T::APBCLK1: PWM0_EN Mask */
-
-#define CLK_APBCLK1_UART5_EN_Pos             10                                   /*!< CLK_T::APBCLK1: UART5_EN Position */
-#define CLK_APBCLK1_UART5_EN_Msk             (1ul << CLK_APBCLK1_UART5_EN_Pos)    /*!< CLK_T::APBCLK1: UART5_EN Mask */
-
-#define CLK_APBCLK1_UART4_EN_Pos             9                                    /*!< CLK_T::APBCLK1: UART4_EN Position */
-#define CLK_APBCLK1_UART4_EN_Msk             (1ul << CLK_APBCLK1_UART4_EN_Pos)    /*!< CLK_T::APBCLK1: UART4_EN Mask */
 
 #define CLK_APBCLK1_UART3_EN_Pos             8                                    /*!< CLK_T::APBCLK1: UART3_EN Position */
 #define CLK_APBCLK1_UART3_EN_Msk             (1ul << CLK_APBCLK1_UART3_EN_Pos)    /*!< CLK_T::APBCLK1: UART3_EN Mask */
@@ -6245,9 +6224,6 @@ typedef struct
      * |[8]     |I2C0_RST  |I2C0 Controller Reset
      * |        |          |0 = I2C0 controller normal operation.
      * |        |          |1 = I2C0 controller reset.
-     * |[9]     |I2C1_RST  |I2C1 Controller Reset
-     * |        |          |0 = I2C1 controller normal operation.
-     * |        |          |1 = I2C1 controller reset.
      * |[12]    |SPI0_RST  |SPI0 Controller Reset
      * |        |          |0 = SPI0 controller normal operation.
      * |        |          |1 = SPI0 controller reset.
@@ -6279,12 +6255,6 @@ typedef struct
      * |[8]     |UART3_RST |UART3 Controller Reset
      * |        |          |0 = UART3 controller normal operation.
      * |        |          |1 = UART3 controller reset.
-     * |[9]     |UART4_RST |UART4 Controller Reset
-     * |        |          |0 = UART4 controller normal operation.
-     * |        |          |1 = UART4 controller reset.
-     * |[10]    |UART5_RST |UART5 Controller Reset
-     * |        |          |0 = UART5 controller normal operation.
-     * |        |          |1 = UART5 controller reset.
      * |[16]    |PWM0_RST  |PWM0 Controller Reset
      * |        |          |0 = PWM0 controller normal operation.
      * |        |          |1 = PWM0 controller reset.
@@ -6420,21 +6390,17 @@ typedef struct
      * |Bits    |Field     |Descriptions
      * | :----: | :----:   | :---- |
      * |[0]     |GPA_MFP0  |PA.0 Pin Function Selection
-     * |        |          |Bits PA0_PWM04 (ALT_MFP3[4]), PA0_UR5TXD (ALT_MFP4[7]), PA0_I2C1SCL (ALT_MFP4[12]) and GPA_MFP0 determine the PA.0 function.
-     * |        |          |(PA0_PWM04, PA0_UR5TXD, PA0_I2C1SCL, GPA_MFP0) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC0 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SCL function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_TXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH4 function is selected.
+     * |        |          |Bits PA0_PWM04 (ALT_MFP3[4]) and GPA_MFP0 determine the PA.0 function.
+     * |        |          |(PA0_PWM04, GPA_MFP0) value and function mapping is as following list.
+     * |        |          |(0, 0) = GPIO function is selected.
+     * |        |          |(0, 1) = ADC0 function is selected.
+     * |        |          |(1, 1) = PWM0_CH4 function is selected.
      * |[1]     |GPA_MFP1  |PA.1 Pin Function Selection
-     * |        |          |Bits PA1_PWM05 (ALT_MFP3[5]), PA1_UR5RXD (ALT_MFP4[6]), PA1_I2C1SDA (ALT_MFP4[13]) and GPA_MFP1 determine the PA.1 function.
-     * |        |          |(PA1_PWM05, PA1_UR5RXD, PA1_I2C1SDA, GPA_MFP1) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC1 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SDA function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_RXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH5 function is selected.
+     * |        |          |Bits PA1_PWM05 (ALT_MFP3[5]) and GPA_MFP1 determine the PA.1 function.
+     * |        |          |(PA1_PWM05, GPA_MFP1) value and function mapping is as following list.
+     * |        |          |(0, 0) = GPIO function is selected.
+     * |        |          |(0, 1) = ADC1 function is selected.
+     * |        |          |(1, 1) = PWM0_CH5 function is selected.
      * |[2]     |GPA_MFP2  |PA.2 Pin Function Selection
      * |        |          |Bits PA2_PWM10 (ALT_MFP3[6]), PA2_UR3TXD (ALT_MFP4[3]) and GPA_MFP2 determine the PA.2 function.
      * |        |          |(PA2_PWM10, PA2_UR3TXD, GPA_MFP2) value and function mapping is as following list.
@@ -6487,13 +6453,11 @@ typedef struct
      * |        |          |Bits PA10_PWM12 (ALT_MFP3[8]) and GPA_MFP10 determine the PA.10 function.
      * |        |          |(PA10_PWM12, GPA_MFP10) value and function mapping is as following list.
      * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = I2C1_SDA function is selected.
      * |        |          |(1, 1) = PWM1_CH2 function is selected.
      * |[11]    |GPA_MFP11 |PA.11 Pin Function Selection
      * |        |          |Bits PA11_PWM13 (ALT_MFP3[9]) and GPA_MFP11 determine the PA.11 function.
      * |        |          |(PA11_PWM13, GPA_MFP11) value and function mapping is as following list.
      * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = I2C1_SCL function is selected.
      * |        |          |(1, 1) = PWM1_CH3 function is selected.
      * |[12]    |GPA_MFP12 |PA.12 Pin Function Selection
      * |        |          |Bits PA12_UR5RXD (ALT_MFP4[8]) and GPA_MFP12 determine the PA.12 function.
@@ -6641,14 +6605,14 @@ typedef struct
      * |        |          |Bits PC6_PWM0BK0 (ALT_MFP3[28]), PC6_I2C0SDA (ALT_MFP4[10]) and GPC_MFP6 determine the PC.6 function.
      * |        |          |(PC6_PWM0BK0, PC6_I2C0SDA, GPC_MFP6) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = UART4_TXD function is selected.
+     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SDA function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE0 function is selected.
      * |[7]     |GPC_MFP7  |PC.7 Pin Function Selection
      * |        |          |Bits PC7_PWM0BK1 (ALT_MFP3[29]), PC7_I2C0SCL (ALT_MFP4[11]) and GPC_MFP7 determine the PC.7 function.
      * |        |          |(PC7_PWM0BK1, PC7_I2C0SCL, GPC_MFP7) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = UART4_RXD function is selected.
+     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SCL function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE1 function is selected.
      * |[8]     |GPC_MFP8  |PC.8 Pin Function Selection
@@ -6872,21 +6836,17 @@ typedef struct
      * |Bits    |Field     |Descriptions
      * | :----: | :----:   | :---- |
      * |[4]     |PA0_PWM04 |PA.0 Pin Alternative Function Selection
-     * |        |          |Bits PA0_PWM04 (ALT_MFP3[4]), PA0_UR5TXD (ALT_MFP4[7]), PA0_I2C1SCL (ALT_MFP4[12]) and GPA_MFP0 determine the PA.0 function.
-     * |        |          |(PA0_PWM04, PA0_UR5TXD, PA0_I2C1SCL, GPA_MFP0) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC0 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SCL function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_TXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH4 function is selected.
+     * |        |          |Bits PA0_PWM04 (ALT_MFP3[4]) and GPA_MFP0 determine the PA.0 function.
+     * |        |          |(PA0_PWM04, GPA_MFP0) value and function mapping is as following list.
+     * |        |          |(0, 0) = GPIO function is selected.
+     * |        |          |(0, 1) = ADC0 function is selected.
+     * |        |          |(1, 1) = PWM0_CH4 function is selected.
      * |[5]     |PA1_PWM05 |PA.1 Pin Alternative Function Selection
-     * |        |          |Bits PA1_PWM05 (ALT_MFP3[5]), PA1_UR5RXD (ALT_MFP4[6]), PA1_I2C1SDA (ALT_MFP4[13]) and GPA_MFP1 determine the PA.1 function.
-     * |        |          |(PA1_PWM05, PA1_UR5RXD , PA1_I2C1SDA, GPA_MFP1) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC1 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SDA function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_RXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH5 function is selected.
+     * |        |          |Bits PA1_PWM05 (ALT_MFP3[5]) and GPA_MFP1 determine the PA.1 function.
+     * |        |          |(PA1_PWM05, GPA_MFP1) value and function mapping is as following list.
+     * |        |          |(0, 0) = GPIO function is selected.
+     * |        |          |(0, 1) = ADC1 function is selected.
+     * |        |          |(1, 1) = PWM0_CH5 function is selected.
      * |[6]     |PA2_PWM10 |PA.2 Pin Alternative Function Selection
      * |        |          |Bits PA2_PWM10 (ALT_MFP3[6]), PA2_UR3TXD (ALT_MFP4[3]) and GPA_MFP2 determine the PA.2 function.
      * |        |          |(PA2_PWM10, PA2_UR3TXD, GPA_MFP2) value and function mapping is as following list.
@@ -6905,13 +6865,11 @@ typedef struct
      * |        |          |Bits PA10_PWM12 (ALT_MFP3[8]) and GPA_MFP10 determine the PA.10 function.
      * |        |          |(PA10_PWM12, GPA_MFP10) value and function mapping is as following list.
      * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = I2C1_SDA function is selected.
      * |        |          |(1, 1) = PWM1_CH2 function is selected.
      * |[9]     |PA11_PWM13|PA.11 Pin Alternative Function Selection
      * |        |          |Bits PA11_PWM13 (ALT_MFP3[9]) and GPA_MFP11 determine the PA.11 function.
      * |        |          |(PA11_PWM13, GPA_MFP11) value and function mapping is as following list.
      * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = I2C1_SCL function is selected.
      * |        |          |(1, 1) = PWM1_CH3 function is selected.
      * |[10]    |PF4_PWM14 |PF.4 Pin Alternative Function Selection
      * |        |          |Bits PF4_PWM14 (ALT_MFP3[10]) and GPF_MFP4 determine the PF.4 function.
@@ -6935,14 +6893,14 @@ typedef struct
      * |        |          |Bits PC6_PWM0BK0 (ALT_MFP3[28]), PC6_I2C0SDA (ALT_MFP4[10]) and GPC_MFP6 determine the PC.6 function.
      * |        |          |(PC6_PWM0BK0, PC6_I2C0SDA, GPB_MFP6) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = UART4_TXD function is selected.
+     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SDA function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE0 function is selected.
      * |[29]    |PC7_PWM0BK1|PC.7 Pin Alternative Function Selection
      * |        |          |Bits PC7_PWM0BK1 (ALT_MFP3[29]), PC7_I2C0SCL (ALT_MFP4[11]) and GPC_MFP7 determine the PC.7 function.
      * |        |          |(PC7_PWM0BK1, PC7_I2C0SCL, GPC_MFP7) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = UART4_RXD function is selected.
+     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SCL function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE1 function is selected.
      * |[30]    |PB3_PWM1BK0|PB.3 Pin Alternative Function Selection
@@ -7009,64 +6967,20 @@ typedef struct
      * |        |          |(0, 0) = GPIO function is selected.
      * |        |          |(0, 1) = ADC6 function is selected.
      * |        |          |(1, 1) = UART3_TXD function is selected.
-     * |[6]     |PA1_UR5RXD|PA.1 Pin Alternative Function Selection
-     * |        |          |Bits PA1_PWM05 (ALT_MFP3[5]), PA1_UR5RXD (ALT_MFP4[6]), PA1_I2C1SDA (ALT_MFP4[13]) and GPA_MFP1 determine the PA.1 function.
-     * |        |          |(PA1_PWM05, PA1_UR5RXD, PA1_I2C1SDA, GPA_MFP1) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC1 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SDA function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_RXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH5 function is selected.
-     * |[7]     |PA0_UR5TXD|PA.0 Pin Alternative Function Selection
-     * |        |          |Bits PA0_PWM04 (ALT_MFP3[4]), PA0_UR5TXD (ALT_MFP4[7]), PA0_I2C1SCL (ALT_MFP4[12]) and GPA_MFP0 determine the PA.0 function.
-     * |        |          |(PA0_PWM04, PA0_UR5TXD, PA0_I2C1SCL, GPA_MFP0) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC0 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SCL function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_TXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH4 function is selected.
-     * |[8]     |PA12_UR5RXD|PA.12 Pin Alternative Function Selection
-     * |        |          |Bits PA12_UR5RXD (ALT_MFP4[8]) and GPA_MFP12 determine the PA.12 function.
-     * |        |          |(PA12_UR5RXD, GPA_MFP12) value and function mapping is as following list.
-     * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = PWM0_CH0 function is selected.
-     * |        |          |(1, 1) = UART5_RXD function is selected.
-     * |[9]     |PA13_UR5TXD|PA.13 Pin Alternative Function Selection
-     * |        |          |Bits PA13_UR5TXD (ALT_MFP4[9]) and GPA_MFP13 determine the PA.13 function.
-     * |        |          |(PA13_UR5TXD, GPA_MFP13) value and function mapping is as following list.
-     * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = PWM0_CH1 function is selected.
-     * |        |          |(1, 1) = UART5_TXD function is selected.
      * |[10]    |PC6_I2C0SDA|PC.6 Pin Alternative Function Selection
      * |        |          |Bits PC6_PWM0BK0 (ALT_MFP3[28]), PC6_I2C0SDA (ALT_MFP4[10]) and GPC_MFP6 determine the PC.6 function.
      * |        |          |(PC6_PWM0BK0, PC6_I2C0SDA, GPC_MFP6) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = UART4_TXD function is selected.
+     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SDA function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE0 function is selected.
      * |[11]    |PC7_I2C0SCL|PC.7 Pin Alternative Function Selection
      * |        |          |Bits PC7_PWM0BK1 (ALT_MFP3[29]), PC7_I2C0SCL (ALT_MFP4[11]) and GPC_MFP7 determine the PC.7 function.
      * |        |          |(PC7_PWM0BK1, PC7_I2C0SCL, GPC_MFP7) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = UART4_RXD function is selected.
+     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SCL function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE1 function is selected.
-     * |[12]    |PA0_I2C1SCL|PA.0 Pin Alternative Function Selection
-     * |        |          |Bits PA0_PWM04 (ALT_MFP3[4]), PA0_UR5TXD (ALT_MFP4[7]), PA0_I2C1SCL (ALT_MFP4[12]) and GPA_MFP0 determine the PA.0 function.
-     * |        |          |(PA0_PWM04, PA0_UR5TXD, PA0_I2C1SCL, GPA_MFP0) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC0 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SCL function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_TXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH4 function is selected.
-     * |[13]    |PA1_I2C1SDA|PA.1 Pin Alternative Function Selection
-     * |        |          |Bits PA1_PWM05 (ALT_MFP3[5]), PA1_UR5RXD (ALT_MFP4[6]), PA1_I2C1SDA (ALT_MFP4[13]) and GPA_MFP1 determine the PA.1 function.
-     * |        |          |(PA1_PWM05, PA1_UR5RXD, PA1_I2C1SDA, GPA_MFP1) value and function mapping is as following list.
-     * |        |          |(0, 0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 0, 1) = ADC1 function is selected.
-     * |        |          |(0, 0, 1, 1) = I2C1_SDA function is selected.
-     * |        |          |(0, 1, 0, 1) = UART5_RXD function is selected.
-     * |        |          |(1, 0, 0, 1) = PWM0_CH5 function is selected.
      * |[14]    |PA7_VREF  |PA.7 Pin Alternative Function Selection
      * |        |          |Bits PA7_VREF (ALT_MFP4[14]) and GPA_MFP7 determine the PA.7 function.
      * |        |          |(PA7_VREF, GPA_MFP7) value and function mapping is as following list.
@@ -7175,9 +7089,6 @@ typedef struct
 #define SYS_IPRSTC2_SPI0_RST_Pos                12                                  /*!< GCR_T::IPRSTC2: SPI0_RST Position */
 #define SYS_IPRSTC2_SPI0_RST_Msk                (1ul << SYS_IPRSTC2_SPI0_RST_Pos)   /*!< GCR_T::IPRSTC2: SPI0_RST Mask */
 
-#define SYS_IPRSTC2_I2C1_RST_Pos                9                                   /*!< GCR_T::IPRSTC2: I2C1_RST Position */
-#define SYS_IPRSTC2_I2C1_RST_Msk                (1ul << SYS_IPRSTC2_I2C1_RST_Pos)   /*!< GCR_T::IPRSTC2: I2C1_RST Mask */
-
 #define SYS_IPRSTC2_I2C0_RST_Pos                8                                   /*!< GCR_T::IPRSTC2: I2C0_RST Position */
 #define SYS_IPRSTC2_I2C0_RST_Msk                (1ul << SYS_IPRSTC2_I2C0_RST_Pos)   /*!< GCR_T::IPRSTC2: I2C0_RST Mask */
 
@@ -7202,12 +7113,6 @@ typedef struct
 
 #define SYS_IPRSTC3_PWM0_RST_Pos                16                                  /*!< GCR_T::IPRSTC3: PWM0_RST Position */
 #define SYS_IPRSTC3_PWM0_RST_Msk                (1ul << SYS_IPRSTC3_PWM0_RST_Pos)   /*!< GCR_T::IPRSTC3: PWM0_RST Mask */
-
-#define SYS_IPRSTC3_UART5_RST_Pos               10                                  /*!< GCR_T::IPRSTC3: UART5_RST Position */
-#define SYS_IPRSTC3_UART5_RST_Msk               (1ul << SYS_IPRSTC3_UART5_RST_Pos)  /*!< GCR_T::IPRSTC3: UART5_RST Mask */
-
-#define SYS_IPRSTC3_UART4_RST_Pos               9                                   /*!< GCR_T::IPRSTC3: UART4_RST Position */
-#define SYS_IPRSTC3_UART4_RST_Msk               (1ul << SYS_IPRSTC3_UART4_RST_Pos)  /*!< GCR_T::IPRSTC3: UART4_RST Mask */
 
 #define SYS_IPRSTC3_UART3_RST_Pos               8                                   /*!< GCR_T::IPRSTC3: UART3_RST Position */
 #define SYS_IPRSTC3_UART3_RST_Msk               (1ul << SYS_IPRSTC3_UART3_RST_Pos)  /*!< GCR_T::IPRSTC3: UART3_RST Mask */
@@ -7362,12 +7267,6 @@ typedef struct
 /* GCR ALTMFP4 Bit Field Definitions */
 #define SYS_ALT_MFP4_PA7_VREF_Pos               14                                          /*!< GCR_T::ALT_MFP4: PA7_VREF Position */
 #define SYS_ALT_MFP4_PA7_VREF_Msk               (1ul << SYS_ALT_MFP4_PA7_VREF_Pos)          /*!< GCR_T::ALT_MFP4: PA7_VREF Mask */
-
-#define SYS_ALT_MFP4_PA1_I2C1SDA_Pos            13                                          /*!< GCR_T::ALT_MFP4: PA1_I2C1SDA Position */
-#define SYS_ALT_MFP4_PA1_I2C1SDA_Msk            (1ul << SYS_ALT_MFP4_PA1_I2C1SDA_Pos)       /*!< GCR_T::ALT_MFP4: PA1_I2C1SDA Mask */
-
-#define SYS_ALT_MFP4_PA0_I2C1SCL_Pos            12                                          /*!< GCR_T::ALT_MFP4: PA0_I2C1SCL Position */
-#define SYS_ALT_MFP4_PA0_I2C1SCL_Msk            (1ul << SYS_ALT_MFP4_PA0_I2C1SCL_Pos)       /*!< GCR_T::ALT_MFP4: PA0_I2C1SCL Mask */
 
 #define SYS_ALT_MFP4_PC7_I2C0SCL_Pos            11                                          /*!< GCR_T::ALT_MFP4: PC7_I2C0SCL Position */
 #define SYS_ALT_MFP4_PC7_I2C0SCL_Msk            (1ul << SYS_ALT_MFP4_PC7_I2C0SCL_Pos)       /*!< GCR_T::ALT_MFP4: PC7_I2C0SCL Mask */
@@ -8004,7 +7903,7 @@ typedef struct
      * |        |          |If the number of bytes of received data is greater than RX_FIFO (UA_RBR) size, 16 bytes of UART0/UART1/UART2, this bit will be set.
      * |        |          |0 = RX FIFO is not overflow.
      * |        |          |1 = RX FIFO is overflow.
-     * |        |          |If the number of bytes of received data is greater than 1 byte, 1 byte of UART3/UART4/UART5, this bit will be set.
+     * |        |          |If the number of bytes of received data is greater than 1 byte, 1 byte of UART3, this bit will be set.
      * |        |          |0 = RX Buffer is not overflow.
      * |        |          |1 = RX Buffer is overflow.
      * |        |          |Note: This bit is read only, but can be cleared by writing "1" to it.
@@ -8052,7 +7951,7 @@ typedef struct
      * |        |          |0 = RX FIFO is not empty.
      * |        |          |1 = RX FIFO is empty.
      * |        |          |Note: When the last byte of RX FIFO has been read by CPU, hardware sets this bit high. It will be cleared when UART receives any new data.
-     * |        |          |This bit initiate RX Buffer empty or not. (UART3/UART4/UART5)
+     * |        |          |This bit initiate RX Buffer empty or not. (UART3)
      * |        |          |0 = RX Buffer is not empty.
      * |        |          |1 = RX Buffer is empty.
      * |        |          |Note: When the last byte of RX Buffer has been read by CPU, hardware sets this bit high.
@@ -8062,10 +7961,10 @@ typedef struct
      * |        |          |0 = RX FIFO is not full.
      * |        |          |1 = RX FIFO is full.
      * |        |          |Note: This bit is set when the number of usage in RX FIFO Buffer is equal to 16 (UART0/UART1/UART2), otherwise is cleared by hardware.
-     * |        |          |This bit initiates RX Buffer is full or not (UART3/UART4/UART5).
+     * |        |          |This bit initiates RX Buffer is full or not (UART3).
      * |        |          |0 = RX buffer is not full.
      * |        |          |1 = RX buffer is full.
-     * |        |          |Note: This bit is set when the number of usage in RX Buffer is equal to 1 (UART3/UART4/UART5), otherwise is cleared by hardware.
+     * |        |          |Note: This bit is set when the number of usage in RX Buffer is equal to 1 (UART3), otherwise is cleared by hardware.
      * |[21:16] |TX_POINTER|TX FIFO Pointer (Read Only)
      * |        |          |This field indicates the TX FIFO Buffer Pointer.
      * |        |          |When CPU writes one byte into UA_THR, then TX_POINTER increases one.
@@ -8073,7 +7972,7 @@ typedef struct
      * |        |          |The Maximum value shown in TX_POINTER is 15 (UART0/UART1/UART2).
      * |        |          |When the using level of TX FIFO Buffer is equal to 16, the TX_FULL bit is set to 1 and TX_POINTER will show 0.
      * |        |          |As one byte of TX FIFO is transferred to Transmitter Shift Register, the TX_FULL bit is cleared to 0 and TX_POINTER will show 15 (UART0/UART1/UART2).
-     * |        |          |TX_POINTER is 0 (UART3/UART4/UART5).
+     * |        |          |TX_POINTER is 0 (UART3).
      * |        |          |When TX Buffer is equal to 1, if one byte data is received, the TX_FULL bit is set to 1 and TX_POINTER will show 1.
      * |        |          |Once the TX Buffer is read, the TX_POINTER is 0.
      * |[22]    |TX_EMPTY  |Transmitter FIFO Empty (Read Only)
@@ -8082,7 +7981,7 @@ typedef struct
      * |        |          |1 = TX FIFO is empty.
      * |        |          |Note: When the last byte of TX FIFO has been transferred to Transmitter Shift Register, hardware sets this bit high.
      * |        |          |It will be cleared when writing data into THR (TX FIFO not empty).
-     * |        |          |This bit indicates TX Buffer filled or not. (UART3/UART4/UART5)
+     * |        |          |This bit indicates TX Buffer filled or not. (UART3)
      * |        |          |0 = TX Buffer is not empty.
      * |        |          |1 = TX Buffer is empty.
      * |        |          |Note: When the last byte of TX Buffer has been transferred to Transmitter Shift Register, hardware sets this bit high.
@@ -8092,15 +7991,15 @@ typedef struct
      * |        |          |0 = TX FIFO is not full.
      * |        |          |1 = TX FIFO is full.
      * |        |          |This bit is set when the number of usage in TX FIFO is equal to 16 (UART0/UART1/UART2), otherwise is cleared by hardware.
-     * |        |          |This bit indicates TX Buffer is full or not.(UART3/UART4/UART5)
+     * |        |          |This bit indicates TX Buffer is full or not.(UART3)
      * |        |          |0 = TX Buffer is not full.
      * |        |          |1 = TX Buffer is full.
-     * |        |          |This bit is set when the number of usage in TX Buffer is equal to 1 (UART3/UART4/UART5), otherwise is cleared by hardware.
+     * |        |          |This bit is set when the number of usage in TX Buffer is equal to 1 (UART3), otherwise is cleared by hardware.
      * |[24]    |TX_OVER_IF|TX Overflow Error Interrupt Flag (Read Only)
      * |        |          |If TX FIFO (UA_THR) is full, an additional write to UA_THR will cause this bit to logic 1. (UART0/UART1/UART2)
      * |        |          |0 = TX FIFO is not overflow.
      * |        |          |1 = TX FIFO is overflow.
-     * |        |          |If TX Buffer is filled, an additional write to UA_THR will cause this bit to logic 1. (UART3/UART4/UART5)
+     * |        |          |If TX Buffer is filled, an additional write to UA_THR will cause this bit to logic 1. (UART3)
      * |        |          |0 = TX Buffer is not overflow.
      * |        |          |1 = TX Buffer is overflow.
      * |        |          |Note: This bit is read only, but can be cleared by writing "1" to it.
@@ -8108,7 +8007,7 @@ typedef struct
      * |        |          |This bit is set by hardware when TX FIFO (UA_THR) is empty and the STOP bit of the last byte has been transmitted. (UART0/UART1/UART2)
      * |        |          |0 = TX FIFO is not empty.
      * |        |          |1 = TX FIFO is empty.
-     * |        |          |This bit is set by hardware when TX Buffer (UA_THR) is empty and the STOP bit of the last byte has been transmitted. (UART3/UART4/UART5)
+     * |        |          |This bit is set by hardware when TX Buffer (UA_THR) is empty and the STOP bit of the last byte has been transmitted. (UART3)
      * |        |          |0 = TX Buffer is not empty.
      * |        |          |1 = TX Buffer is empty.
      * |        |          |Note: This bit is cleared automatically when TX FIFO/TX Buffer is not empty or the last byte transmission has not completed.
@@ -9135,8 +9034,6 @@ typedef struct
 #define UART1_BASE           (APB2_BASE      + 0x50000)                 /*!< UART1 Base Address                              */
 #define UART2_BASE           (APB2_BASE      + 0x54000)                 /*!< UART2 Base Address                              */
 #define UART3_BASE           (APB1_BASE      + 0x54000)                 /*!< UART3 Base Address                              */
-#define UART4_BASE           (APB1_BASE      + 0x58000)                 /*!< UART4 Base Address                              */
-#define UART5_BASE           (APB2_BASE      + 0x58000)                 /*!< UART5 Base Address                              */
 
 
 #define TIMER0_BASE          (APB1_BASE      + 0x10000)                 /*!< Timer0 Base Address                              */
@@ -9151,7 +9048,6 @@ typedef struct
 #define SPI0_BASE            (APB1_BASE      + 0x30000)                 /*!< SPI0 Base Address                                */
 
 #define I2C0_BASE            (APB1_BASE      + 0x20000)                 /*!< I2C0 Base Address                                */
-#define I2C1_BASE            (APB2_BASE      + 0x20000)                 /*!< I2C1 Base Address                                */
 
 #define ADC_BASE             (APB1_BASE      + 0xE0000)                 /*!< ADC Base Address                                 */
 
@@ -9192,8 +9088,6 @@ typedef struct
 #define UART1               ((UART_T *) UART1_BASE)                     /*!< UART1 Configuration Struct                       */
 #define UART2               ((UART_T *) UART2_BASE)                     /*!< UART2 Configuration Struct                       */
 #define UART3               ((UART_T *) UART3_BASE)                     /*!< UART3 Configuration Struct                       */
-#define UART4               ((UART_T *) UART4_BASE)                     /*!< UART4 Configuration Struct                       */
-#define UART5               ((UART_T *) UART5_BASE)                     /*!< UART5 Configuration Struct                       */
 
 #define TIMER0              ((TIMER_T *) TIMER0_BASE)                   /*!< Timer0 Configuration Struct                      */
 #define TIMER1              ((TIMER_T *) TIMER1_BASE)                   /*!< Timer1 Configuration Struct                      */
@@ -9207,7 +9101,6 @@ typedef struct
 #define SPI0                ((SPI_T *) SPI0_BASE)                       /*!< SPI0 Configuration Struct                        */
 
 #define I2C0                ((I2C_T *) I2C0_BASE)                       /*!< I2C0 Configuration Struct                        */
-#define I2C1                ((I2C_T *) I2C1_BASE)                       /*!< I2C1 Configuration Struct                        */
 
 #define ADC                 ((ADC_T *) ADC_BASE)                        /*!< ADC Configuration Struct                         */
 

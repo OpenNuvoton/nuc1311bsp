@@ -66,12 +66,6 @@ void I2C_Close(I2C_T *i2c)
         SYS->IPRSTC2 |= SYS_IPRSTC2_I2C0_RST_Msk;
         SYS->IPRSTC2 &= ~SYS_IPRSTC2_I2C0_RST_Msk;
     }
-    else if((uint32_t)i2c == I2C1_BASE)
-    {
-        SYS->IPRSTC2 |= SYS_IPRSTC2_I2C1_RST_Msk;
-        SYS->IPRSTC2 &= ~SYS_IPRSTC2_I2C1_RST_Msk;
-    }
-
     /* Disable I2C */
     i2c->I2CON &= ~I2C_I2CON_ENS1_Msk;
 }

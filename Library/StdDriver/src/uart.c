@@ -138,10 +138,6 @@ void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag)
         NVIC_DisableIRQ(UART02_IRQn);
     else if(uart == UART3)
         NVIC_DisableIRQ(UART3_IRQn);
-    else if(uart == UART4)
-        NVIC_DisableIRQ(UART4_IRQn);
-    else
-        NVIC_DisableIRQ(UART5_IRQn);
 }
 
 
@@ -201,10 +197,6 @@ void UART_EnableInt(UART_T*  uart, uint32_t u32InterruptFlag)
         NVIC_EnableIRQ(UART02_IRQn);
     else if(uart == UART3)
         NVIC_EnableIRQ(UART3_IRQn);
-    else if(uart == UART4)
-        NVIC_EnableIRQ(UART4_IRQn);
-    else
-        NVIC_EnableIRQ(UART5_IRQn);
 
 }
 
