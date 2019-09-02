@@ -1,13 +1,11 @@
 /**************************************************************************//**
  * @file     main.c
  * @version  V2.0
- * $Revision: 6 $
- * $Date: 15/01/16 1:45p $
  * @brief
  *           Configure SPI0 as Master mode and demonstrate how to communicate with an off-chip SPI Slave device.
  *           Needs to work with SPI_SlaveFifoMode sample code.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -186,5 +184,5 @@ void SPI0_IRQHandler(void)
 }
 
 
-/*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/
 

@@ -1,13 +1,11 @@
 /**************************************************************************//**
  * @file     main.c
  * @version  V2.0
- * $Revision: 9 $
- * $Date: 15/01/16 1:45p $
  * @brief
  *           Configure SPI0 as Slave mode and demonstrate how to communicate with an off-chip SPI Master device.
  *           This sample code needs to work with SPI_MasterFifoMode sample code.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -164,6 +162,6 @@ void SPI_Init(void)
     SPI0->DIVIDER = 0;
 }
 
-/*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/
 
 

@@ -1,14 +1,12 @@
 /******************************************************************************
  * @file     main.c
  * @version  V2.00
- * $Revision: 8 $
- * $Date: 15/01/16 1:45p $
  * @brief
  *           Implement SPI Master loop back transfer.
  *           This sample code needs to connect SPI0_MISO0 pin and SPI0_MOSI0 pin together.
  *           It will compare the received data with transmitted data.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include <stdio.h>
 #include "NUC1311.h"
@@ -45,7 +43,7 @@ int main(void)
 
     printf("\n\n");
     printf("+--------------------------------------------------------------------+\n");
-    printf("|                   NUC1311 SPI Driver Sample Code                    |\n");
+    printf("|                   NUC1311 SPI Driver Sample Code                   |\n");
     printf("+--------------------------------------------------------------------+\n");
     printf("\n");
     printf("\nThis sample code demonstrates SPI0 self loop back data transfer.\n");
@@ -169,5 +167,5 @@ void SPI_Init(void)
     SPI_EnableAutoSS(SPI0, SPI_SS0, SPI_SS_ACTIVE_LOW);
 }
 
-/*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/
 
