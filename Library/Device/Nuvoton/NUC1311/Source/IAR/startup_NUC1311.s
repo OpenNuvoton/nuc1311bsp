@@ -20,7 +20,7 @@
     DATA
 __vector_table
     DCD     sfe(CSTACK)
-    DCD     __iar_program_start
+    DCD     Reset_Handler
 
     DCD     NMI_Handler
     DCD     HardFault_Handler

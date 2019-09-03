@@ -237,7 +237,7 @@ void Note_Configure()
     printf("|  |--------|       |-----------|   CANBUS  |-----------|       |--------| |\n");
     printf("|  |        |------>|           |<--------->|           |<------|        | |\n");
     printf("|  |        |CAN_TX |    CAN    |   CAN_H   |   CAN     |CAN_TX |        | |\n");
-    printf("|  | NUC1311 |       |Transceiver|           |Transceiver|       | NUC1311 | |\n");
+    printf("|  | NUC1311|       |Transceiver|           |Transceiver|       | NUC1311| |\n");
     printf("|  |        |<------|           |<--------->|           |------>|        | |\n");
     printf("|  |        |CAN_RX |           |   CAN_L   |           |CAN_RX |        | |\n");
     printf("|  |--------|       |-----------|           |-----------|       |--------| |\n");
