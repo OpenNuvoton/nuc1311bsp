@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include "NUC1311.h"
 
-#define PLL_CLOCK           72000000
+#define PLL_CLOCK           50000000
 
 
 void SYS_Init(void)
