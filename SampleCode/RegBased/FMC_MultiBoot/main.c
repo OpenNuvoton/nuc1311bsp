@@ -191,28 +191,31 @@ int32_t main(void)
     ch = getchar();
     switch(ch)
     {
-        case '0':
-            u32BootAddr = 0x1000;
-            break;
-        case '1':
-            u32BootAddr = 0x2000;
-            break;
-        case '2':
-            u32BootAddr = 0x3000;
-            break;
-        case '3':
-            u32BootAddr = 0x4000;
-            break;
-        default:
-            u32BootAddr = 0x0000;
-            break;
+    case '0':
+        u32BootAddr = 0x1000;
+        break;
+    case '1':
+        u32BootAddr = 0x2000;
+        break;
+    case '2':
+        u32BootAddr = 0x3000;
+        break;
+    case '3':
+        u32BootAddr = 0x4000;
+        break;
+    default:
+        u32BootAddr = 0x0000;
+        break;
     }
+
+    FMC->ISPCMD = FMC_ISPCMD_VECMAP; /* Set ISP Command Code */
+    FMC->ISPADR = u32BootAddr;       /* The address of specified page which will be map to address 0x0*/
+    FMC->ISPTRG = 0x1;               /* Trigger to start ISP procedure */
+    __ISB();                         /* To make sure ISP/CPU be Synchronized */
+    while(FMC->ISPTRG);
 
     /* Reset CPU only to reset to new vector page */
     SYS->IPRSTC1 |= SYS_IPRSTC1_CPU_RST_Msk;
-
-    /* Reset System to reset to new vector page. */
-    //NVIC_SystemReset();
 
     while(1);
 
