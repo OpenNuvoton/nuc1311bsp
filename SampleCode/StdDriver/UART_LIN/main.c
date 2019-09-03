@@ -1,11 +1,9 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 8 $
- * $Date: 15/01/16 1:46p $
  * @brief    Transmit LIN header and response.
  * @note
- * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -515,3 +513,4 @@ int main(void)
 
 }
 
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

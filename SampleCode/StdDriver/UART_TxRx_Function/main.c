@@ -1,11 +1,9 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 9 $
- * $Date: 15/06/04 10:36a $
  * @brief    Transmit and receive data from PC terminal through RS232 interface.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -141,6 +139,7 @@ void UART_TEST_HANDLE()
     uint8_t u8InChar = 0xFF;
     uint32_t u32IntSts = UART0->ISR;
 
+    /* Receive Data Available Interrupt Handle */    
     if(u32IntSts & UART_ISR_RDA_INT_Msk)
     {
         printf("\nInput:");
@@ -148,6 +147,13 @@ void UART_TEST_HANDLE()
         /* Get all the input characters */
         while(UART_IS_RX_READY(UART0))
         {
+            /* Receive Line Status Error Handle */ 
+            if(u32IntSts & UART_ISR_RLS_INT_Msk)
+            {                
+                /* Clear Receive Line Status Interrupt */
+                UART_ClearIntFlag(UART0, UART_ISR_RLS_INT_Msk);   
+            }              
+                    
             /* Get the character from UART Buffer */
             u8InChar = UART_READ(UART0);
 
@@ -170,6 +176,7 @@ void UART_TEST_HANDLE()
         printf("\nTransmission Test:");
     }
 
+    /* Transmit Holding Register Empty Interrupt Handle */       
     if(u32IntSts & UART_ISR_THRE_INT_Msk)
     {
         uint16_t tmp;
@@ -183,6 +190,14 @@ void UART_TEST_HANDLE()
             g_u32comRbytes--;
         }
     }
+    
+    /* Buffer Error Interrupt Handle */    
+    if(u32IntSts & UART_ISR_BUF_ERR_INT_Msk)   
+    {
+        /* Clear Buffer Error Interrupt */
+        UART_ClearIntFlag(UART0, UART_ISR_BUF_ERR_INT_Msk);             
+    }       
+    
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -205,14 +220,17 @@ void UART_FunctionTest()
         UART0 will print the received char on screen.
     */
 
-    /* Enable Interrupt and install the call back function */
-    UART_EnableInt(UART0, (UART_IER_RDA_IEN_Msk | UART_IER_THRE_IEN_Msk | UART_IER_TOUT_IEN_Msk));
+    /* Enable UART RDA, THRE, RLS and Buffer Error interrupt */
+    UART_EnableInt(UART0, (UART_IER_RDA_IEN_Msk | UART_IER_THRE_IEN_Msk | UART_IER_RLS_IEN_Msk | UART_IER_BUF_ERR_IEN_Msk));
+    NVIC_EnableIRQ(UART02_IRQn);    
     while(g_bWait);
 
-    /* Disable Interrupt */
-    UART_DisableInt(UART0, (UART_IER_RDA_IEN_Msk | UART_IER_THRE_IEN_Msk | UART_IER_TOUT_IEN_Msk));
+    /* Disable UART RDA, THRE, RLS and Buffer Error interrupt */
+    UART_DisableInt(UART0, (UART_IER_RDA_IEN_Msk | UART_IER_THRE_IEN_Msk | UART_IER_RLS_IEN_Msk | UART_IER_BUF_ERR_IEN_Msk));
+    NVIC_DisableIRQ(UART02_IRQn);    
     g_bWait = TRUE;
     printf("\nUART Sample Demo End.\n");
 
 }
 
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

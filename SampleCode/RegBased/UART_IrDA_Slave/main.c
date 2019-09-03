@@ -1,13 +1,11 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 11 $
- * $Date: 15/07/10 11:07a $
  * @brief
  *           Transmit and receive data in UART IrDA mode.
  *           This sample code needs to work with UART_IrDA_Master.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -227,3 +225,4 @@ int32_t main(void)
 
 }
 
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

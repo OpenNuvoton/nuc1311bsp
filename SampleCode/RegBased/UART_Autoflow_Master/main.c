@@ -1,13 +1,11 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 10 $
- * $Date: 15/07/10 11:07a $
  * @brief
  *           Transmit and receive data with auto flow control.
  *           This sample code needs to work with UART_Autoflow_Slave.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -75,15 +73,15 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Set GPB multi-function pins for UART0 RXD(PB.0) and TXD(PB.1) */
-    /* Set GPB multi-function pins for UART1 RXD(PB.4), TXD(PB.5), nRTS(PB.6) and nCTS(PB.7) */
-
-    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk |
-                      SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk |
-                      SYS_GPB_MFP_PB6_Msk | SYS_GPB_MFP_PB7_Msk);
-
-    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD |
-                     SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD |
-                     SYS_GPB_MFP_PB6_UART1_nRTS | SYS_GPB_MFP_PB7_UART1_nCTS);
+    /* Set GPB multi-function pins for UART1 RXD(PB.4) and TXD(PB.5) */
+    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk | SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk);
+    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD | SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD );
+                     
+    /* Set GPA multi-function pins for UART1 nRTS(PA.8) and nCTS(PA.9) */
+    SYS->GPA_MFP &= ~( SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk );   
+    SYS->GPA_MFP |= ( SYS_GPA_MFP_PA8_UART1_nRTS | SYS_GPA_MFP_PA9_UART1_nCTS );     
+    SYS->ALT_MFP4 &= ~( SYS_ALT_MFP4_PA8_Msk | SYS_ALT_MFP4_PA9_Msk );   
+    SYS->ALT_MFP4 |= ( SYS_ALT_MFP4_PA8_UART1_nRTS | SYS_ALT_MFP4_PA9_UART1_nCTS );  
 
 }
 
@@ -166,7 +164,7 @@ void AutoFlow_FunctionTxTest()
     printf("|  ______                                            _____  |\n");
     printf("| |      |                                          |     | |\n");
     printf("| |Master|--UART1_TXD(PB.5)  <==>  UART1_RXD(PB.4)--|Slave| |\n");
-    printf("| |      |--UART1_nCTS(PB.7) <==> UART1_nRTS(PB.6)--|     | |\n");
+    printf("| |      |--UART1_nCTS(PA.9) <==> UART1_nRTS(PA.8)--|     | |\n");
     printf("| |______|                                          |_____| |\n");
     printf("|                                                           |\n");
     printf("+-----------------------------------------------------------+\n");
@@ -203,3 +201,5 @@ void AutoFlow_FunctionTxTest()
     printf("\n Transmit Done\n");
 
 }
+
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

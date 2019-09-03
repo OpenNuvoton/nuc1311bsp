@@ -124,20 +124,15 @@ void SYS_ResetCPU(void)
   *             - \ref TMR2_RST
   *             - \ref TMR3_RST
   *             - \ref I2C0_RST
-  *             - \ref I2C1_RST
   *             - \ref SPI0_RST
   *             - \ref UART0_RST
   *             - \ref UART1_RST
   *             - \ref UART2_RST
   *             - \ref UART3_RST
-  *             - \ref UART4_RST
-  *             - \ref UART5_RST
   *             - \ref CAN0_RST
   *             - \ref ADC_RST
   *             - \ref PWM0_RST
   *             - \ref PWM1_RST
-  *             - \ref BPWM0_RST
-  *             - \ref BPWM1_RST
   * @return     None
   * @details    This function reset selected modules.
   */

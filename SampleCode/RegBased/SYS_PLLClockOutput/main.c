@@ -1,13 +1,11 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 16 $
- * $Date: 15/07/10 11:07a $
  * @brief
  *           Change system clock to different PLL frequency and output system clock from CLKO pin.
  *
  * @note
- * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -268,9 +266,9 @@ int32_t main(void)
         5. Output system clock from CKO pin, and the output frequency = system clock / 4
     */
 
-    printf("+----------------------------------------+\n");
+    printf("+-----------------------------------------+\n");
     printf("|    NUC1311 System Driver Sample Code    |\n");
-    printf("+----------------------------------------+\n");
+    printf("+-----------------------------------------+\n");
 
     if(M32(FLAG_ADDR) == SIGNATURE)
     {
@@ -329,3 +327,5 @@ int32_t main(void)
     /* Reset CPU */
     SYS->IPRSTC1 |= SYS_IPRSTC1_CPU_RST_Msk;
 }
+
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

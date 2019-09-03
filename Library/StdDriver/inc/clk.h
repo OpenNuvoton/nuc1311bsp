@@ -107,11 +107,6 @@ extern "C"
 #define CLK_CLKSEL3_PWM1_S_PLL          (0x0UL<<CLK_CLKSEL3_PWM1_S_Pos)    /*!< Setting PWM1 clock source as PLL */
 #define CLK_CLKSEL3_PWM1_S_PCLK         (0x1UL<<CLK_CLKSEL3_PWM1_S_Pos)    /*!< Setting PWM1 clock source as PCLK */
 
-#define CLK_CLKSEL3_BPWM0_S_PLL         (0x0UL<<CLK_CLKSEL3_BPWM0_S_Pos)    /*!< Setting BPWM0 clock source as PLL */
-#define CLK_CLKSEL3_BPWM0_S_PCLK        (0x1UL<<CLK_CLKSEL3_BPWM0_S_Pos)    /*!< Setting BPWM0 clock source as PCLK */
-#define CLK_CLKSEL3_BPWM1_S_PLL         (0x0UL<<CLK_CLKSEL3_BPWM1_S_Pos)    /*!< Setting BPWM1 clock source as PLL */
-#define CLK_CLKSEL3_BPWM1_S_PCLK        (0x1UL<<CLK_CLKSEL3_BPWM1_S_Pos)    /*!< Setting BPWM1 clock source as PCLK */
-
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKDIV constant definitions.                                                                           */
@@ -210,10 +205,6 @@ extern "C"
                         MODULE_CLKSEL_ENC(NA)|MODULE_CLKSEL_Msk_ENC(NA)|MODULE_CLKSEL_Pos_ENC(NA)|\
                         MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))      /*!< I2C0 Module */
 
-#define I2C1_MODULE    (MODULE_APBCLK_ENC( 1)|MODULE_IP_EN_Pos_ENC(CLK_APBCLK_I2C1_EN_Pos) |\
-                        MODULE_CLKSEL_ENC(NA)|MODULE_CLKSEL_Msk_ENC(NA)|MODULE_CLKSEL_Pos_ENC(NA)|\
-                        MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))      /*!< I2C1 Module */
-
 #define SPI0_MODULE    (MODULE_APBCLK_ENC( 1)|MODULE_IP_EN_Pos_ENC(CLK_APBCLK_SPI0_EN_Pos) |\
                         MODULE_CLKSEL_ENC( 1)|MODULE_CLKSEL_Msk_ENC( 1)|MODULE_CLKSEL_Pos_ENC( 4)|\
                         MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))      /*!< SPI0 Module */
@@ -246,14 +237,6 @@ extern "C"
                         MODULE_CLKSEL_ENC( 1)|MODULE_CLKSEL_Msk_ENC( 3)|MODULE_CLKSEL_Pos_ENC(24)|\
                         MODULE_CLKDIV_ENC( 0)|MODULE_CLKDIV_Msk_ENC(0x0F)|MODULE_CLKDIV_Pos_ENC( 8))    /*!< UART3 Module */
 
-#define UART4_MODULE   (MODULE_APBCLK_ENC(2UL)|MODULE_IP_EN_Pos_ENC(CLK_APBCLK1_UART4_EN_Pos)|\
-                        MODULE_CLKSEL_ENC( 1)|MODULE_CLKSEL_Msk_ENC( 3)|MODULE_CLKSEL_Pos_ENC(24)|\
-                        MODULE_CLKDIV_ENC( 0)|MODULE_CLKDIV_Msk_ENC(0x0F)|MODULE_CLKDIV_Pos_ENC( 8))    /*!< UART4 Module */
-
-#define UART5_MODULE   (MODULE_APBCLK_ENC(2UL)|MODULE_IP_EN_Pos_ENC(CLK_APBCLK1_UART5_EN_Pos)|\
-                        MODULE_CLKSEL_ENC( 1)|MODULE_CLKSEL_Msk_ENC( 3)|MODULE_CLKSEL_Pos_ENC(24)|\
-                        MODULE_CLKDIV_ENC( 0)|MODULE_CLKDIV_Msk_ENC(0x0F)|MODULE_CLKDIV_Pos_ENC( 8))    /*!< UART5 Module */
-
 #define PWM0_MODULE    (MODULE_APBCLK_ENC(2UL)|MODULE_IP_EN_Pos_ENC(CLK_APBCLK1_PWM0_EN_Pos)|\
                         MODULE_CLKSEL_ENC( 3)|MODULE_CLKSEL_Msk_ENC( 1)|MODULE_CLKSEL_Pos_ENC(16)|\
                         MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))      /*!< PWM0 Module */
@@ -262,13 +245,6 @@ extern "C"
                         MODULE_CLKSEL_ENC( 3)|MODULE_CLKSEL_Msk_ENC( 1)|MODULE_CLKSEL_Pos_ENC(17)|\
                         MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))      /*!< PWM1 Module */
 
-#define BPWM0_MODULE   (MODULE_APBCLK_ENC(2UL)|MODULE_IP_EN_Pos_ENC(CLK_APBCLK1_BPWM0_EN_Pos)|\
-                        MODULE_CLKSEL_ENC( 3)|MODULE_CLKSEL_Msk_ENC( 1)|MODULE_CLKSEL_Pos_ENC(18)|\
-                        MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))      /*!< BPWM0 Module */
-
-#define BPWM1_MODULE   (MODULE_APBCLK_ENC(2UL)|MODULE_IP_EN_Pos_ENC(CLK_APBCLK1_BPWM1_EN_Pos)|\
-                        MODULE_CLKSEL_ENC( 3)|MODULE_CLKSEL_Msk_ENC( 1)|MODULE_CLKSEL_Pos_ENC(19)|\
-                        MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))      /*!< BPWM1 Module */
 
 
 /*@}*/ /* end of group CLK_EXPORTED_CONSTANTS */

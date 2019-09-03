@@ -122,22 +122,12 @@ void UART_DisableFlowCtrl(UART_T* uart)
  *
  *    @return       None
  *
- *    @details      The function is used to disable UART specified interrupt and disable NVIC UART IRQ.
+ *    @details      The function is used to disable UART specified interrupt.
  */
 void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag)
 {
     /* Disable UART specified interrupt */
     UART_DISABLE_INT(uart, u32InterruptFlag);
-
-    /* Disable NVIC UART IRQ */
-    if(uart == UART0)
-        NVIC_DisableIRQ(UART02_IRQn);
-    else if(uart == UART1)
-        NVIC_DisableIRQ(UART1_IRQn);
-    else if(uart == UART2)
-        NVIC_DisableIRQ(UART02_IRQn);
-    else if(uart == UART3)
-        NVIC_DisableIRQ(UART3_IRQn);
 }
 
 
@@ -180,24 +170,12 @@ void UART_EnableFlowCtrl(UART_T* uart)
  *
  *    @return       None
  *
- *    @details      The function is used to enable UART specified interrupt and enable NVIC UART IRQ.
+ *    @details      The function is used to enable UART specified interrupt.
  */
 void UART_EnableInt(UART_T*  uart, uint32_t u32InterruptFlag)
 {
-
     /* Enable UART specified interrupt */
     UART_ENABLE_INT(uart, u32InterruptFlag);
-
-    /* Enable NVIC UART IRQ */
-    if(uart == UART0)
-        NVIC_EnableIRQ(UART02_IRQn);
-    else if(uart == UART1)
-        NVIC_EnableIRQ(UART1_IRQn);
-    else if(uart == UART2)
-        NVIC_EnableIRQ(UART02_IRQn);
-    else if(uart == UART3)
-        NVIC_EnableIRQ(UART3_IRQn);
-
 }
 
 
@@ -484,7 +462,7 @@ uint32_t UART_Write(UART_T* uart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
     for(u32Count = 0; u32Count != u32WriteBytes; u32Count++)
     {
         u32delayno = 0;
-        while((uart->FSR & UART_FSR_TE_FLAG_Msk) == 0)   /* Wait Tx empty and Time-out manner */
+        while(uart->FSR & UART_FSR_TX_FULL_Msk)   /* Wait Tx not full and Time-out manner */
         {
             u32delayno++;
             if(u32delayno >= 0x40000000)
@@ -503,8 +481,3 @@ uint32_t UART_Write(UART_T* uart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 /*@}*/ /* end of group UART_Driver */
 
 /*@}*/ /* end of group Device_Driver */
-
-
-
-
-

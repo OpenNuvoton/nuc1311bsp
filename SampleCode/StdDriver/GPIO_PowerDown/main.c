@@ -1,11 +1,9 @@
 /**************************************************************************//**
  * @file     main.c
- * @version  V2.00
- * $Revision: 6 $
- * $Date: 15/01/16 11:44a $
+ * @version  V3.00
  * @brief    Show how to wake up system from Power-down mode by GPIO interrupt.
  * @note
- * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "NUC1311.h"
@@ -135,4 +133,4 @@ int main(void)
 
 }
 
-/*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

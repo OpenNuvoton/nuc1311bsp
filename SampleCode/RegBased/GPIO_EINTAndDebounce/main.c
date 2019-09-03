@@ -1,11 +1,9 @@
 /**************************************************************************//**
  * @file     main.c
  * @version  V3.00
- * $Revision: 9 $
- * $Date: 15/07/10 11:07a $
  * @brief    Show the usage of GPIO external interrupt function and de-bounce function.
  * @note
- * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "NUC1311.h"
@@ -15,22 +13,6 @@
 #define PLL_CLOCK       50000000
 
 
-/**
- * @brief       External INT0 IRQ
- *
- * @param       None
- *
- * @return      None
- *
- * @details     The External INT0(PB.14) default IRQ, declared in startup_NUC131.s.
- */
-void EINT0_IRQHandler(void)
-{
-    /* For PB.14, clear the INT flag */
-    PB->ISRC = BIT14;
-
-    printf("EINT0 occurred.\n");
-}
 
 /**
  * @brief       External INT1 IRQ
@@ -39,7 +21,7 @@ void EINT0_IRQHandler(void)
  *
  * @return      None
  *
- * @details     The External INT1(PB.15) default IRQ, declared in startup_NUC131.s.
+ * @details     The External INT1(PB.15) default IRQ, declared in startup_NUC1311.s.
  */
 void EINT1_IRQHandler(void)
 {
@@ -100,6 +82,9 @@ void SYS_Init(void)
     /* Set GPB multi-function pins for UART0 RXD and TXD */
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk);
     SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD);
+    
+    /* Set GPB multi-function pin for external interrupt */
+    SYS->GPB_MFP = (SYS->GPB_MFP & (~SYS_GPB_MFP_PB15_Msk)) | SYS_GPB_MFP_PB15_INT1;    
 
 }
 
@@ -136,19 +121,13 @@ int main(void)
 
     printf("\n\nCPU @ %d Hz\n", SystemCoreClock);
     printf("+------------------------------------------------------------+\n");
-    printf("|    GPIO EINT0/EINT1 Interrupt and De-bounce Sample Code    |\n");
+    printf("|       GPIO EINT1 Interrupt and De-bounce Sample Code       |\n");
     printf("+------------------------------------------------------------+\n\n");
 
     /*-----------------------------------------------------------------------------------------------------*/
     /* GPIO External Interrupt Function Test                                                               */
     /*-----------------------------------------------------------------------------------------------------*/
-    printf("EINT0(PB.14) and EINT1(PB.15) are used to test interrupt\n");
-
-    /* Configure PB.14 as EINT0 pin and enable interrupt by falling edge trigger */
-    PB->PMD = (PB->PMD & (~GPIO_PMD_PMD14_Msk)) | (GPIO_PMD_INPUT << GPIO_PMD_PMD14_Pos);
-    PB->IMD |= (GPIO_IMD_EDGE << 14);
-    PB->IEN |= ((uint32_t)BIT14 << GPIO_IEN_IF_EN_Pos);
-    NVIC_EnableIRQ(EINT0_IRQn);
+    printf("EINT1(PB.15) is used to test interrupt\n");
 
     /* Configure PB.15 as EINT1 pin and enable interrupt by rising and falling edge trigger */
     PB->PMD = (PB->PMD & (~GPIO_PMD_PMD15_Msk)) | (GPIO_PMD_INPUT << GPIO_PMD_PMD15_Pos);
@@ -158,10 +137,10 @@ int main(void)
 
     /* Enable interrupt de-bounce function and select de-bounce sampling cycle time is 1024 clocks of LIRC clock */
     GPIO->DBNCECON = (GPIO_DBNCECON_ICLK_ON_Msk | GPIO_DBCLKSRC_LIRC | GPIO_DBCLKSEL_1024);
-    PB->DBEN |= (BIT14 | BIT15);
+    PB->DBEN |= BIT15;
 
     /* Waiting for interrupts */
     while(1);
 }
 
-/*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

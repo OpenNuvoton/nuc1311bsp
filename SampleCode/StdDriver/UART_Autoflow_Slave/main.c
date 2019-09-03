@@ -1,8 +1,6 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 8 $
- * $Date: 15/01/16 1:45p $
  * @brief
  *           Transmit and receive data with auto flow control.
  *           This sample code needs to work with UART_Autoflow_Master.
@@ -71,15 +69,15 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Set GPB multi-function pins for UART0 RXD(PB.0) and TXD(PB.1) */
-    /* Set GPB multi-function pins for UART1 RXD(PB.4), TXD(PB.5), nRTS(PB.6) and nCTS(PB.7) */
-
-    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk |
-                      SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk |
-                      SYS_GPB_MFP_PB6_Msk | SYS_GPB_MFP_PB7_Msk);
-
-    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD |
-                     SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD |
-                     SYS_GPB_MFP_PB6_UART1_nRTS | SYS_GPB_MFP_PB7_UART1_nCTS);
+    /* Set GPB multi-function pins for UART1 RXD(PB.4) and TXD(PB.5) */
+    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk | SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk);
+    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD | SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD );
+                     
+    /* Set GPA multi-function pins for UART1 nRTS(PA.8) and nCTS(PA.9) */
+    SYS->GPA_MFP &= ~( SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk );   
+    SYS->GPA_MFP |= ( SYS_GPA_MFP_PA8_UART1_nRTS | SYS_GPA_MFP_PA9_UART1_nCTS );     
+    SYS->ALT_MFP4 &= ~( SYS_ALT_MFP4_PA8_Msk | SYS_ALT_MFP4_PA9_Msk );   
+    SYS->ALT_MFP4 |= ( SYS_ALT_MFP4_PA8_UART1_nRTS | SYS_ALT_MFP4_PA9_UART1_nCTS );  
 
 }
 
@@ -152,7 +150,7 @@ void UART1_IRQHandler(void)
     volatile uint32_t u32IntSts = UART1->ISR;;
 
     /* Rx Ready or Time-out INT*/
-    if(UART_GET_INT_FLAG(UART1, UART_ISR_RDA_INT_Msk) ||  UART_GET_INT_FLAG(UART1, UART_ISR_TOUT_INT_Msk))
+    if(UART_GET_INT_FLAG(UART1, UART_ISR_RDA_INT_Msk) || UART_GET_INT_FLAG(UART1, UART_ISR_TOUT_INT_Msk))
     {
         /* Handle received data */
         g_u8RecData[g_i32pointer] = UART_READ(UART1);
@@ -173,7 +171,7 @@ void AutoFlow_FunctionRxTest()
     printf("|  ______                                            _____  |\n");
     printf("| |      |                                          |     | |\n");
     printf("| |Master|--UART1_TXD(PB.5)  <==>  UART1_RXD(PB.4)--|Slave| |\n");
-    printf("| |      |--UART1_nCTS(PB.7) <==> UART1_nRTS(PB.6)--|     | |\n");
+    printf("| |      |--UART1_nCTS(PA.9) <==> UART1_nRTS(PA.8)--|     | |\n");
     printf("| |______|                                          |_____| |\n");
     printf("|                                                           |\n");
     printf("+-----------------------------------------------------------+\n");
@@ -195,18 +193,17 @@ void AutoFlow_FunctionRxTest()
     UART_EnableFlowCtrl(UART1);
 
     /* Set RTS Trigger Level as 8 bytes */
-    UART1->FCR &= ~UART_FCR_RTS_TRI_LEV_Msk;
-    UART1->FCR |= UART_FCR_RTS_TRI_LEV_8BYTES;
+    UART1->FCR = (UART1->FCR & (~UART_FCR_RTS_TRI_LEV_Msk)) | UART_FCR_RTS_TRI_LEV_8BYTES;
 
     /* Set RX Trigger Level as 8 bytes */
-    UART1->FCR &= ~UART_FCR_RFITL_Msk;
-    UART1->FCR |= UART_FCR_RFITL_8BYTES;
+    UART1->FCR = (UART1->FCR & (~UART_FCR_RFITL_Msk)) | UART_FCR_RFITL_8BYTES;
 
     /* Set Timeout time 0x3E bit-time and time-out counter enable */
     UART_SetTimeoutCnt(UART1, 0x3E);
 
     /* Enable RDA\RLS\RTO Interrupt  */
     UART_EnableInt(UART1, (UART_IER_RDA_IEN_Msk | UART_IER_RLS_IEN_Msk | UART_IER_TOUT_IEN_Msk));
+    NVIC_EnableIRQ(UART1_IRQn);      
 
     printf("\n Starting to receive data...\n");
 
@@ -226,5 +223,8 @@ void AutoFlow_FunctionRxTest()
 
     /* Disable RDA\RLS\RTO Interrupt */
     UART_DisableInt(UART1, (UART_IER_RDA_IEN_Msk | UART_IER_RLS_IEN_Msk | UART_IER_TOUT_IEN_Msk));
+    NVIC_DisableIRQ(UART1_IRQn);      
 
 }
+
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

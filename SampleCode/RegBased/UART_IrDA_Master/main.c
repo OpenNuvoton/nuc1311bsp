@@ -1,8 +1,6 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 10 $
- * $Date: 15/07/10 11:07a $
  * @brief
  *           Transmit and receive data in UART IrDA mode.
  *           This sample code needs to work with UART_IrDA_Slave.
@@ -223,3 +221,4 @@ int32_t main(void)
 
 }
 
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

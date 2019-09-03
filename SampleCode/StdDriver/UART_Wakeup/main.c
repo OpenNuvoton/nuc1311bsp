@@ -1,11 +1,9 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 1 $
- * $Date: 15/03/10 5:48p $
  * @brief    Show how to wake up system form Power-down mode by UART interrupt.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -62,13 +60,13 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Set GPB multi-function pins for UART0 RXD and TXD */
-    /* Set GPB multi-function pins for UART1 RXD, TXD and nCTS */
+    /* Set GPB multi-function pins for UART1 RXD and nCTS */
+    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk | SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk);
+    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD | SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD );
 
-    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk |
-                      SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk | SYS_GPB_MFP_PB7_Msk);
-
-    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD |
-                     SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD | SYS_GPB_MFP_PB7_UART1_nCTS);
+    /* Set GPA multi-function pins for UART1 nCTS */
+    SYS->GPA_MFP = (SYS->GPA_MFP & (~SYS_GPA_MFP_PA9_Msk)) | SYS_GPA_MFP_PA9_UART1_nCTS;
+    SYS->ALT_MFP4 = (SYS->ALT_MFP4 & (~SYS_ALT_MFP4_PA9_Msk)) | SYS_ALT_MFP4_PA9_UART1_nCTS;    
 
 }
 
@@ -163,7 +161,8 @@ void UART_CTSWakeUp(void)
     UART_ClearIntFlag(UART1, UART_ISR_MODEM_INT_Msk);
 
     /* Enable UART CTS wake-up interrupt */
-    UART_EnableInt(UART1, UART_IER_WKCTSIEN_Msk);    
+    UART_EnableInt(UART1, UART_IER_WKCTSIEN_Msk);  
+    NVIC_EnableIRQ(UART1_IRQn);      
 
     printf("System enter to Power-down mode.\n");
     printf("Toggle nCTS of UART1 to wake-up system.\n");
@@ -182,6 +181,7 @@ void UART_CTSWakeUp(void)
 
     /* Disable UART CTS Wake-up Interrupt */
     UART_DisableInt(UART1, UART_IER_WKCTSIEN_Msk);
+    NVIC_DisableIRQ(UART1_IRQn);      
 
 }
 
@@ -193,7 +193,8 @@ void UART_DataWakeUp(void)
 
     /* Enable UART data wake-up interrupt */
     UART_EnableInt(UART1, UART_IER_WKDATIEN_Msk);
-
+    NVIC_EnableIRQ(UART1_IRQn);    
+    
     printf("System enter to Power-down mode.\n");
     printf("Send data with baud rate 110bps to UART1 to wake-up system.\n");
 
@@ -257,3 +258,5 @@ void UART_PowerDownWakeUpTest(void)
 
     printf("\nUART Sample Program End.\n");
 }
+
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

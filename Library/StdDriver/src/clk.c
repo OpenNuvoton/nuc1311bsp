@@ -295,12 +295,6 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
   * |\ref UART3_MODULE   |\ref CLK_CLKSEL1_UART_S_HXT                                   |\ref CLK_CLKDIV_UART(x) |
   * |\ref UART3_MODULE   |\ref CLK_CLKSEL1_UART_S_PLL                                   |\ref CLK_CLKDIV_UART(x) |
   * |\ref UART3_MODULE   |\ref CLK_CLKSEL1_UART_S_HIRC                                  |\ref CLK_CLKDIV_UART(x) |
-  * |\ref UART4_MODULE   |\ref CLK_CLKSEL1_UART_S_HXT                                   |\ref CLK_CLKDIV_UART(x) |
-  * |\ref UART4_MODULE   |\ref CLK_CLKSEL1_UART_S_PLL                                   |\ref CLK_CLKDIV_UART(x) |
-  * |\ref UART4_MODULE   |\ref CLK_CLKSEL1_UART_S_HIRC                                  |\ref CLK_CLKDIV_UART(x) |
-  * |\ref UART5_MODULE   |\ref CLK_CLKSEL1_UART_S_HXT                                   |\ref CLK_CLKDIV_UART(x) |
-  * |\ref UART5_MODULE   |\ref CLK_CLKSEL1_UART_S_PLL                                   |\ref CLK_CLKDIV_UART(x) |
-  * |\ref UART5_MODULE   |\ref CLK_CLKSEL1_UART_S_HIRC                                  |\ref CLK_CLKDIV_UART(x) |
   * |\ref FDIV_MODULE    |\ref CLK_CLKSEL2_FRQDIV_S_HXT                                 | x                      |
   * |\ref FDIV_MODULE    |\ref CLK_CLKSEL2_FRQDIV_S_HCLK                                | x                      |
   * |\ref FDIV_MODULE    |\ref CLK_CLKSEL2_FRQDIV_S_HIRC                                | x                      |
@@ -310,10 +304,6 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
   * |\ref PWM0_MODULE    |\ref CLK_CLKSEL3_PWM0_S_PCLK                                  | x                      |
   * |\ref PWM1_MODULE    |\ref CLK_CLKSEL3_PWM1_S_PLL                                   | x                      |
   * |\ref PWM1_MODULE    |\ref CLK_CLKSEL3_PWM1_S_PCLK                                  | x                      |
-  * |\ref BPWM0_MODULE   |\ref CLK_CLKSEL3_BPWM0_S_PLL                                  | x                      |
-  * |\ref BPWM0_MODULE   |\ref CLK_CLKSEL3_BPWM0_S_PCLK                                 | x                      |
-  * |\ref BPWM1_MODULE   |\ref CLK_CLKSEL3_BPWM1_S_PLL                                  | x                      |
-  * |\ref BPWM1_MODULE   |\ref CLK_CLKSEL3_BPWM1_S_PCLK                                 | x                      |
   */
 
 void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32ClkDiv)
@@ -397,17 +387,14 @@ void CLK_DisableXtalRC(uint32_t u32ClkMask)
   *             - \ref TMR2_MODULE
   *             - \ref TMR3_MODULE
   *             - \ref FDIV_MODULE
+  *             - \ref I2C0_MODULE
   *             - \ref SPI0_MODULE
   *             - \ref UART0_MODULE
   *             - \ref UART1_MODULE
   *             - \ref UART2_MODULE
   *             - \ref UART3_MODULE
-  *             - \ref UART4_MODULE
-  *             - \ref UART5_MODULE
   *             - \ref PWM0_MODULE
   *             - \ref PWM1_MODULE
-  *             - \ref BPWM0_MODULE
-  *             - \ref BPWM1_MODULE
   *             - \ref ADC_MODULE
   *             - \ref CAN0_MODULE
   * @return     None
@@ -431,17 +418,14 @@ void CLK_EnableModuleClock(uint32_t u32ModuleIdx)
   *             - \ref TMR2_MODULE
   *             - \ref TMR3_MODULE
   *             - \ref FDIV_MODULE
+  *             - \ref I2C0_MODULE
   *             - \ref SPI0_MODULE
   *             - \ref UART0_MODULE
   *             - \ref UART1_MODULE
   *             - \ref UART2_MODULE
   *             - \ref UART3_MODULE
-  *             - \ref UART4_MODULE
-  *             - \ref UART5_MODULE
   *             - \ref PWM0_MODULE
   *             - \ref PWM1_MODULE
-  *             - \ref BPWM0_MODULE
-  *             - \ref BPWM1_MODULE
   *             - \ref ADC_MODULE
   *             - \ref CAN0_MODULE
   * @return     None

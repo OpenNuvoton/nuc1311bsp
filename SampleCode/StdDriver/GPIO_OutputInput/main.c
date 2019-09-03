@@ -1,11 +1,9 @@
 /**************************************************************************//**
  * @file     main.c
- * @version  V2.00
- * $Revision: 6 $
- * $Date: 15/01/16 11:44a $
+ * @version  V3.00
  * @brief    Show how to set GPIO pin mode and use pin data input/output control.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "NUC1311.h"
@@ -127,4 +125,4 @@ int main(void)
     while(1);
 }
 
-/*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

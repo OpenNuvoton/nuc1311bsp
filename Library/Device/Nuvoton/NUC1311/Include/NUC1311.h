@@ -6460,17 +6460,13 @@ typedef struct
      * |        |          |(0, 0) = GPIO function is selected.
      * |        |          |(1, 1) = PWM1_CH3 function is selected.
      * |[12]    |GPA_MFP12 |PA.12 Pin Function Selection
-     * |        |          |Bits PA12_UR5RXD (ALT_MFP4[8]) and GPA_MFP12 determine the PA.12 function.
-     * |        |          |(PA12_UR5RXD, GPA_MFP12) value and function mapping is as following list.
-     * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = PWM0_CH0 function is selected.
-     * |        |          |(1, 1) = UART5_RXD function is selected.
+     * |        |          |Bit GPA_MFP12 determines the PA.12 function.
+     * |        |          |0 = GPIO function is selected.
+     * |        |          |1 = PWM0_CH0 function is selected.
      * |[13]    |GPA_MFP13 |PA.13 Pin Function Selection
-     * |        |          |Bits PA13_UR5TXD (ALT_MFP4[9]) and GPA_MFP13 determine the PA.13 function.
-     * |        |          |(PA13_UR5TXD, GPA_MFP13) value and function mapping is as following list.
-     * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = PWM0_CH1 function is selected.
-     * |        |          |(1, 1) = UART5_TXD function is selected.
+     * |        |          |Bit GPA_MFP13 determines the PA.13 function.
+     * |        |          |0 = GPIO function is selected.
+     * |        |          |1 = PWM0_CH1 function is selected.
      * |[14]    |GPA_MFP14 |PA.14 Pin Function Selection
      * |        |          |Bit GPA_MFP14 determines the PA.14 function.
      * |        |          |0 = GPIO function is selected.
@@ -6524,43 +6520,16 @@ typedef struct
      * |        |          |Bit GPB_MFP5 determines the PB.5 function.
      * |        |          |0 = GPIO function is selected.
      * |        |          |1 = UART1_TXD function is selected.
-     * |[6]     |GPB_MFP6  |PB.6 Pin Function Selection
-     * |        |          |Bit GPB_MFP6 determines the PB.6 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = UART1_nRTS function is selected.
-     * |[7]     |GPB_MFP7  |PB.7 Pin Function Selection
-     * |        |          |Bit GPB_MFP7 determines the PB.7 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = UART1_nCTS function is selected.
      * |[8]     |GPB_MFP8  |PB.8 Pin Function Selection
      * |        |          |Bits PB8_CLKO (ALT_MFP[29]) and GPB_MFP8 determine the PB.8 function.
      * |        |          |(PB8_CLKO, GPB_MFP8) value and function mapping is as following list.
      * |        |          |(0, 0) = GPIO function is selected.
      * |        |          |(0, 1) = TM0 function is selected.
      * |        |          |(1, 1) = CLKO function is selected.
-     * |[9]     |GPB_MFP9  |PB.9 Pin Function Selection
-     * |        |          |Bit GPB_MFP9 determines the PB.9 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = TM1 function is selected.
-     * |[10]    |GPB_MFP10 |PB.10 Pin Function Selection
-     * |        |          |Bit GPB_MFP10 determines the PB.10 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = TM2 function is selected.
-     * |[11]    |GPB_MFP11 |PB.11 Pin Function Selection
-     * |        |          |Bits PB11_PWM04 (ALT_MFP3[24]) and GPB_MFP11 determine the PB.11 function.
-     * |        |          |(PB11_PWM04, GPB_MFP11) value and function mapping is as following list.
-     * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = TM3 function is selected.
-     * |        |          |(1, 1) = PWM0_CH4 function is selected.
      * |[12]    |GPB_MFP12 |PB.12 Pin Function Selection
-     * |        |          |Bits GPB_MFP12 determine the PB.12 function.
-     * |        |          |(GPB_MFP12) value and function mapping is as following list.
-     * |        |          |(0) = GPIO function is selected.
-     * |        |          |(1) = CLKO function is selected.
-     * |[14]    |GPB_MFP14 |PB.14 Pin Function Selection
-     * |        |          |Bit GPB_MFP14 determines the PB.14 function.
+     * |        |          |Bit GPB_MFP12 determines the PB.12 function.
      * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = INT0 function is selected.
+     * |        |          |1 = CLKO function is selected.
      * |[15]    |GPB_MFP15 |PB.15 Pin Function Selection
      * |        |          |Bits PB15_T0EX (ALT_MFP[24]), PB15_TM0 (ALT_MFP2[2]) and GPB_MFP15 determine the PB.15 function.
      * |        |          |(PB15_T0EX, PB15_TM0, GPB_MFP15) value and function mapping is as following list.
@@ -6605,32 +6574,14 @@ typedef struct
      * |        |          |Bits PC6_PWM0BK0 (ALT_MFP3[28]), PC6_I2C0SDA (ALT_MFP4[10]) and GPC_MFP6 determine the PC.6 function.
      * |        |          |(PC6_PWM0BK0, PC6_I2C0SDA, GPC_MFP6) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SDA function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE0 function is selected.
      * |[7]     |GPC_MFP7  |PC.7 Pin Function Selection
      * |        |          |Bits PC7_PWM0BK1 (ALT_MFP3[29]), PC7_I2C0SCL (ALT_MFP4[11]) and GPC_MFP7 determine the PC.7 function.
      * |        |          |(PC7_PWM0BK1, PC7_I2C0SCL, GPC_MFP7) value and function mapping is as following list.
      * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = Reserved
      * |        |          |(0, 1, 1) = I2C0_SCL function is selected.
      * |        |          |(1, 0, 1) = PWM0_BRAKE1 function is selected.
-     * |[8]     |GPC_MFP8  |PC.8 Pin Function Selection
-     * |        |          |Bit GPC_MFP8 determines the PC.8 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = PWM0_BRAKE0 function is selected.
-     * |[9]     |GPC_MFP9  |PC.9 Pin Function Selection
-     * |        |          |Bit GPC_MFP9 determines the PC.9 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = PWM0_BRAKE1 function is selected.
-     * |[10]    |GPC_MFP10 |PC.10 Pin Function Selection
-     * |        |          |Bit GPC_MFP10 determines the PC.10 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = PWM1_BRAKE0 function is selected.
-     * |[11]    |GPC_MFP11 |PC.11 Pin Function Selection
-     * |        |          |Bit GPC_MFP11 determines the PC.11 function.
-     * |        |          |0 = GPIO function is selected.
-     * |        |          |1 = PWM1_BRAKE1 function is selected.
      * |[31:16] |GPC_TYPEn |Trigger Function Selection
      * |        |          |0 = GPIOC[15:0] I/O input Schmitt Trigger function Disabled.
      * |        |          |1 = GPIOC[15:0] I/O input Schmitt Trigger function Enabled.
@@ -6675,18 +6626,6 @@ typedef struct
      * ===================================================================================================
      * Offset: 0x40  GPIOE Multiple Function and Input Type Control Register
      * ---------------------------------------------------------------------------------------------------
-     * |Bits    |Field     |Descriptions
-     * | :----: | :----:   | :---- |
-     * |[5]     |GPE_MFP5  |PE.5 Pin Function Selection
-     * |        |          |Bits PE5_T1EX (ALT_MFP[25]), PE5_TM1 (ALT_MFP2[3]) and GPE_MFP5 determine the PE.5 function.
-     * |        |          |(PE5_T1EX, PE5_TM1, GPE_MFP5) value and function mapping is as following list.
-     * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = PWM0_CH5 function is selected.
-     * |        |          |(0, 1, 1) = TM1 function is selected.
-     * |        |          |(1, 0, 1) = TM1_EXT function is selected.
-     * |[21]    |GPE_TYPE5 |Trigger Function Selection
-     * |        |          |0 = GPIOE[5] I/O input Schmitt Trigger function Disabled.
-     * |        |          |1 = GPIOE[5] I/O input Schmitt Trigger function Enabled.
      */
     __IO uint32_t GPE_MFP;
 
@@ -6728,10 +6667,9 @@ typedef struct
      * |        |          |0 = GPIO function is selected.
      * |        |          |1 = ICE_DAT function is selected.
      * |[8]     |GPF_MFP8  |PF.8 Pin Function Selection
-     * |        |          |Bits GPF_MFP8 determine the PF.8 function.
-     * |        |          |(GPF_MFP8) value and function mapping is as following list.
-     * |        |          |(0) = GPIO function is selected.
-     * |        |          |(1) = CLKO function is selected.
+     * |        |          |Bit GPF_MFP8 determines the PF.8 function.
+     * |        |          |0 = GPIO function is selected.
+     * |        |          |1 = CLKO function is selected.
      * |[24:16] |GPF_TYPEn |Trigger Function Selection
      * |        |          |0 = GPIOF[8:0] I/O input Schmitt Trigger function Disabled.
      * |        |          |1 = GPIOF[8:0] I/O input Schmitt Trigger function Enabled.
@@ -6754,13 +6692,6 @@ typedef struct
      * |        |          |(0, 0, 1) = INT1 function is selected.
      * |        |          |(0, 1, 1) = TM0 function is selected.
      * |        |          |(1, 0, 1) = TM0_EXT function is selected.
-     * |[25]    |PE5_T1EX  |PE.5 Pin Alternative Function Selection
-     * |        |          |Bits PE5_T1EX (ALT_MFP[25]), PE5_TM1 (ALT_MFP2[3]) and GPE_MFP5 determine the PE.5 function.
-     * |        |          |(PE5_T1EX, PE5_TM1, GPE_MFP5) value and function mapping is as following list.
-     * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = PWM0_CH5 function is selected.
-     * |        |          |(0, 1, 1) = TM1 function is selected.
-     * |        |          |(1, 0, 1) = TM1_EXT function is selected.
      * |[26]    |PB2_T2EX  |PB.2 Pin Alternative Function Selection
      * |        |          |Bits PB2_TM2 (ALT_MFP2[4]), PB2_PWM1BK1 (ALT_MFP3[31]), PB2_T2EX (ALT_MFP[26]) and GPB_MFP2 determine the PB.2 function.
      * |        |          |(PB2_TM2, PB2_PWM1BK1, PB2_T2EX, GPB_MFP2) value and function mapping is as following list.
@@ -6802,13 +6733,6 @@ typedef struct
      * |        |          |(0, 0, 1) = INT1 function is selected.
      * |        |          |(0, 1, 1) = TM0 function is selected.
      * |        |          |(1, 0, 1) = TM0_EXT function is selected.
-     * |[3]     |PE5_TM1   |PE.5 Pin Alternative Function Selection
-     * |        |          |Bits PE5_T1EX (ALT_MFP[25]), PE5_TM1 (ALT_MFP2[3]) and GPE_MFP5 determine the PE.5 function.
-     * |        |          |(PE5_T1EX, PE5_TM1, GPE_MFP5) value and function mapping is as following list.
-     * |        |          |(0, 0, 0) = GPIO function is selected.
-     * |        |          |(0, 0, 1) = PWM0_CH5 function is selected.
-     * |        |          |(0, 1, 1) = TM1 function is selected.
-     * |        |          |(1, 0, 1) = TM1_EXT function is selected.
      * |[4]     |PB2_TM2   |PB.2 Pin Alternative Function Selection
      * |        |          |Bits PB2_TM2 (ALT_MFP2[4]), PB2_PWM1BK1 (ALT_MFP3[31]), PB2_T2EX (ALT_MFP[26]) and GPB_MFP2 determine the PB.2 function.
      * |        |          |(PB2_TM2, PB2_PWM1BK1, PB2_T2EX, GPB_MFP2) value and function mapping is as following list.
@@ -6883,12 +6807,6 @@ typedef struct
      * |        |          |(0, 0) = GPIO function is selected.
      * |        |          |(0, 1) = I2C0_SCL function is selected.
      * |        |          |(1, 1) = PWM1_CH5 function is selected.
-     * |[24]    |PB11_PWM04|PB.11 Pin Alternative Function Selection
-     * |        |          |Bits PB11_PWM04 (ALT_MFP3[24]) and GPB_MFP11 determine the PB.11 function.
-     * |        |          |(PB11_PWM04, GPB_MFP11) value and function mapping is as following list.
-     * |        |          |(0, 0) = GPIO function is selected.
-     * |        |          |(0, 1) = TM3 function is selected.
-     * |        |          |(1, 1) = PWM0_CH4 function is selected.
      * |[28]    |PC6_PWM0BK0|PC.6 Pin Alternative Function Selection
      * |        |          |Bits PC6_PWM0BK0 (ALT_MFP3[28]), PC6_I2C0SDA (ALT_MFP4[10]) and GPC_MFP6 determine the PC.6 function.
      * |        |          |(PC6_PWM0BK0, PC6_I2C0SDA, GPB_MFP6) value and function mapping is as following list.
@@ -7181,13 +7099,6 @@ typedef struct
 #define SYS_GPD_MFP_GPD_MFP_Pos                  0                                          /*!< GCR_T::GPD_MFP: GPD_MFP Position */
 #define SYS_GPD_MFP_GPD_MFP_Msk                  (0xFFFFul << SYS_GPD_MFP_GPD_MFP_Pos)      /*!< GCR_T::GPD_MFP: GPD_MFP Mask */
 
-/* GCR GPEMFP Bit Field Definitions */
-#define SYS_GPE_MFP_GPE_TYPE_Pos                 16                                         /*!< GCR_T::GPE_MFP: GPE_TYPE Position */
-#define SYS_GPE_MFP_GPE_TYPE_Msk                 (0xFFFFul << SYS_GPE_MFP_GPE_TYPE_Pos)     /*!< GCR_T::GPE_MFP: GPE_TYPE Mask */
-
-#define SYS_GPE_MFP_GPE_MFP5_Pos                 5                                          /*!< GCR_T::GPE_MFP: GPE_MFP5 Position */
-#define SYS_GPE_MFP_GPE_MFP5_Msk                 (1ul << SYS_GPE_MFP_GPE_MFP5_Pos)          /*!< GCR_T::GPE_MFP: GPE_MFP5 Mask */
-
 /* GCR GPFMFP Bit Field Definitions */
 #define SYS_GPF_MFP_GPF_TYPE_Pos                 16                                         /*!< GCR_T::GPF_MFP: GPF_TYPE Position */
 #define SYS_GPF_MFP_GPF_TYPE_Msk                 (0x1Ful << SYS_GPF_MFP_GPF_TYPE_Pos)       /*!< GCR_T::GPF_MFP: GPF_TYPE Mask */
@@ -7205,9 +7116,6 @@ typedef struct
 #define SYS_ALT_MFP_PB2_T2EX_Pos                 26                                         /*!< GCR_T::ALT_MFP: PB2_T2EX Position */
 #define SYS_ALT_MFP_PB2_T2EX_Msk                 (1ul << SYS_ALT_MFP_PB2_T2EX_Pos)          /*!< GCR_T::ALT_MFP: PB3_T3EX Mask */
 
-#define SYS_ALT_MFP_PE5_T1EX_Pos                 25                                         /*!< GCR_T::ALT_MFP: PE5_T1EX Position */
-#define SYS_ALT_MFP_PE5_T1EX_Msk                 (1ul << SYS_ALT_MFP_PE5_T1EX_Pos)          /*!< GCR_T::ALT_MFP: PE5_T1EX Mask */
-
 #define SYS_ALT_MFP_PB15_T0EX_Pos                24                                         /*!< GCR_T::ALT_MFP: PB15_T0EX Position */
 #define SYS_ALT_MFP_PB15_T0EX_Msk                (1ul << SYS_ALT_MFP_PB15_T0EX_Pos)         /*!< GCR_T::ALT_MFP: PB15_T0EX Mask */
 
@@ -7217,9 +7125,6 @@ typedef struct
 
 #define SYS_ALT_MFP2_PB2_TM2_Pos                4                                           /*!< GCR_T::ALT_MFP2: PB2_TM2 Position */
 #define SYS_ALT_MFP2_PB2_TM2_Msk                (1ul << SYS_ALT_MFP2_PB2_TM2_Pos)           /*!< GCR_T::ALT_MFP2: PB2_TM2 Mask */
-
-#define SYS_ALT_MFP2_PE5_TM1_Pos                3                                           /*!< GCR_T::ALT_MFP2: PE5_TM1 Position */
-#define SYS_ALT_MFP2_PE5_TM1_Msk                (1ul << SYS_ALT_MFP2_PE5_TM1_Pos)           /*!< GCR_T::ALT_MFP2: PE5_TM1 Mask */
 
 #define SYS_ALT_MFP2_PB15_TM0_Pos               2                                           /*!< GCR_T::ALT_MFP2: PB15_TM0 Position */
 #define SYS_ALT_MFP2_PB15_TM0_Msk               (1ul << SYS_ALT_MFP2_PB15_TM0_Pos)          /*!< GCR_T::ALT_MFP2: PB15_TM0 Mask */
@@ -7236,9 +7141,6 @@ typedef struct
 
 #define SYS_ALT_MFP3_PC6_PWM0BK0_Pos            28                                          /*!< GCR_T::ALT_MFP3: PC6_PWM0BK0 Position */
 #define SYS_ALT_MFP3_PC6_PWM0BK0_Msk            (1ul << SYS_ALT_MFP3_PC6_PWM0BK0_Pos)       /*!< GCR_T::ALT_MFP3: PC6_PWM0BK0 Mask */
-
-#define SYS_ALT_MFP3_PB11_PWM04_Pos             24                                          /*!< GCR_T::ALT_MFP3: PB11_PWM04 Position */
-#define SYS_ALT_MFP3_PB11_PWM04_Msk             (1ul << SYS_ALT_MFP3_PB11_PWM04_Pos)        /*!< GCR_T::ALT_MFP3: PB11_PWM04 Mask */
 
 #define SYS_ALT_MFP3_PF5_PWM15_Pos              11                                          /*!< GCR_T::ALT_MFP3: PF5_PWM15 Position */
 #define SYS_ALT_MFP3_PF5_PWM15_Msk              (1ul << SYS_ALT_MFP3_PF5_PWM15_Pos)         /*!< GCR_T::ALT_MFP3: PF5_PWM15 Mask */
@@ -7273,18 +7175,6 @@ typedef struct
 
 #define SYS_ALT_MFP4_PC6_I2C0SDA_Pos            10                                          /*!< GCR_T::ALT_MFP4: PC6_I2C0SDA Position */
 #define SYS_ALT_MFP4_PC6_I2C0SDA_Msk            (1ul << SYS_ALT_MFP4_PC6_I2C0SDA_Pos)       /*!< GCR_T::ALT_MFP4: PC6_I2C0SDA Mask */
-
-#define SYS_ALT_MFP4_PA13_UR5TXD_Pos            9                                           /*!< GCR_T::ALT_MFP4: PA13_UR5TXD Position */
-#define SYS_ALT_MFP4_PA13_UR5TXD_Msk            (1ul << SYS_ALT_MFP4_PA13_UR5TXD_Pos)       /*!< GCR_T::ALT_MFP4: PA13_UR5TXD Mask */
-
-#define SYS_ALT_MFP4_PA12_UR5RXD_Pos            8                                           /*!< GCR_T::ALT_MFP4: PA12_UR5RXD Position */
-#define SYS_ALT_MFP4_PA12_UR5RXD_Msk            (1ul << SYS_ALT_MFP4_PA12_UR5RXD_Pos)       /*!< GCR_T::ALT_MFP4: PA12_UR5RXD Mask */
-
-#define SYS_ALT_MFP4_PA0_UR5TXD_Pos             7                                           /*!< GCR_T::ALT_MFP4: PA0_UR5TXD Position */
-#define SYS_ALT_MFP4_PA0_UR5TXD_Msk             (1ul << SYS_ALT_MFP4_PA0_UR5TXD_Pos)        /*!< GCR_T::ALT_MFP4: PA0_UR5TXD Mask */
-
-#define SYS_ALT_MFP4_PA1_UR5RXD_Pos             6                                           /*!< GCR_T::ALT_MFP4: PA1_UR5RXD Position */
-#define SYS_ALT_MFP4_PA1_UR5RXD_Msk             (1ul << SYS_ALT_MFP4_PA1_UR5RXD_Pos)        /*!< GCR_T::ALT_MFP4: PA1_UR5RXD Mask */
 
 #define SYS_ALT_MFP4_PA6_UR3TXD_Pos             5                                           /*!< GCR_T::ALT_MFP4: PA6_UR3TXD Position */
 #define SYS_ALT_MFP4_PA6_UR3TXD_Msk             (1ul << SYS_ALT_MFP4_PA6_UR3TXD_Pos)        /*!< GCR_T::ALT_MFP4: PA6_UR3TXD Mask */

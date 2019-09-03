@@ -1,13 +1,11 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * $Revision: 12 $
- * $Date: 15/07/10 11:07a $
  * @brief
  *           Transmit and receive data in UART RS485 mode.
  *           This sample code needs to work with UART_RS485_Master.
  * @note
- * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -17,7 +15,7 @@
 #define PLLCON_SETTING  CLK_PLLCON_50MHz_HXT
 #define PLL_CLOCK       50000000
 
-#define IS_USE_RS485NMM   1      //1:Select NMM_Mode , 0:Select AAD_Mode
+#define IS_USE_RS485NMM   0      //1:Select NMM_Mode , 0:Select AAD_Mode
 #define MATCH_ADDRSS1     0xC0
 #define MATCH_ADDRSS2     0xA2
 #define UNMATCH_ADDRSS1   0xB1
@@ -168,7 +166,7 @@ void RS485_FunctionTest()
     printf("|  ______                                            _____  |\n");
     printf("| |      |                                          |     | |\n");
     printf("| |Master|--UART1_TXD(PB.5)  <==>  UART1_RXD(PB.4)--|Slave| |\n");
-    printf("| |      |--UART1_nRTS(PB.6) <==> UART1_nRTS(PB.6)--|     | |\n");
+    printf("| |      |--UART1_nRTS(PA.8) <==> UART1_nRTS(PA.8)--|     | |\n");
     printf("| |______|                                          |_____| |\n");
     printf("|                                                           |\n");
     printf("+-----------------------------------------------------------+\n");
@@ -254,15 +252,13 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Set GPB multi-function pins for UART0 RXD(PB.0) and TXD(PB.1) */
-    /* Set GPB multi-function pins for UART1 RXD(PB.4), TXD(PB.5), nRTS(PB.6) and nCTS(PB.7) */
-
-    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk |
-                      SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk |
-                      SYS_GPB_MFP_PB6_Msk | SYS_GPB_MFP_PB7_Msk);
-
-    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD |
-                     SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD |
-                     SYS_GPB_MFP_PB6_UART1_nRTS | SYS_GPB_MFP_PB7_UART1_nCTS);
+    /* Set GPB multi-function pins for UART1 RXD(PB.4) and TXD(PB.5) */
+    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk | SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk);
+    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD | SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD );
+                     
+    /* Set GPA multi-function pin for UART1 nRTS(PA.8) */
+    SYS->GPA_MFP =(SYS->GPA_MFP & (~SYS_GPA_MFP_PA8_Msk)) | SYS_GPA_MFP_PA8_UART1_nRTS;
+    SYS->ALT_MFP4  =(SYS->ALT_MFP4 & (~SYS_ALT_MFP4_PA8_Msk)) | SYS_ALT_MFP4_PA8_UART1_nRTS;     
 
 }
 
@@ -329,3 +325,5 @@ int32_t main(void)
     while(1);
 
 }
+
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

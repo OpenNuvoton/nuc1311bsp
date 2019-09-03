@@ -1,11 +1,9 @@
 /****************************************************************************
  * @file     main.c
- * @version  V2.00
- * $Revision: 2 $
- * $Date: 15/07/10 11:07a $
+ * @version  V3.00
  * @brief    Show how to wake up system form Power-down mode by UART interrupt.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -70,13 +68,14 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Set GPB multi-function pins for UART0 RXD and TXD */
-    /* Set GPB multi-function pins for UART1 RXD, TXD and nCTS */
+    /* Set GPB multi-function pins for UART1 RXD and nCTS */
 
-    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk |
-                      SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk | SYS_GPB_MFP_PB7_Msk);
+    SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk | SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk);
+    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD | SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD );
 
-    SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD |
-                     SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD | SYS_GPB_MFP_PB7_UART1_nCTS);
+    /* Set GPA multi-function pins for UART1 nCTS */
+    SYS->GPA_MFP = (SYS->GPA_MFP & (~SYS_GPA_MFP_PA9_Msk)) | SYS_GPA_MFP_PA9_UART1_nCTS;
+    SYS->ALT_MFP4 = (SYS->ALT_MFP4 & (~SYS_ALT_MFP4_PA9_Msk)) | SYS_ALT_MFP4_PA9_UART1_nCTS;   
 
 }
 
@@ -273,3 +272,5 @@ void UART_PowerDownWakeUpTest(void)
 
     printf("\nUART Sample Program End.\n");
 }
+
+/*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/
