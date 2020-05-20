@@ -4,6 +4,8 @@
  * @brief    NUC1311 series PWM driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2010 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include "NUC1311.h"
