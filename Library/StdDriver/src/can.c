@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     adc.c
- * @version  V3.00
+ * @version  V3.01
  * @brief    NUC1311 series ADC driver source file
  *
  * @note
@@ -868,11 +868,11 @@ int32_t CAN_SetRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32IDType, uint3
   */
 int32_t CAN_SetMultiRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32MsgCount, uint32_t u32IDType, uint32_t u32ID)
 {
-    uint32_t i = 0;
+    uint32_t i;
     uint32_t u32TimeOutCount;
     uint32_t u32EOB_Flag = 0;
 
-    for(i = 1; i < u32MsgCount; i++)
+    for(i = 1; i <= u32MsgCount; i++)
     {
         u32TimeOutCount = 0;
 
