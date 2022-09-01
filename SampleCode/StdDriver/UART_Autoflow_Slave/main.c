@@ -149,7 +149,7 @@ void UART1_IRQHandler(void)
 {
     volatile uint32_t u32IntSts = UART1->ISR;;
 
-    /* Rx Ready or Time-out INT*/
+    /* Rx Ready or Time-out INT */
     if(UART_GET_INT_FLAG(UART1, UART_ISR_RDA_INT_Msk) || UART_GET_INT_FLAG(UART1, UART_ISR_TOUT_INT_Msk))
     {
         /* Handle received data */
@@ -162,7 +162,7 @@ void UART1_IRQHandler(void)
 /*---------------------------------------------------------------------------------------------------------*/
 void AutoFlow_FunctionRxTest()
 {
-    uint32_t u32i;
+    uint32_t u32i, u32Err = 0;
 
     printf("\n");
     printf("+-----------------------------------------------------------+\n");
@@ -183,7 +183,7 @@ void AutoFlow_FunctionRxTest()
     printf("|  Description :                                            |\n");
     printf("|    The sample code needs two boards. One is Master and    |\n");
     printf("|    the other is slave. Master will send 1k bytes data     |\n");
-    printf("|    to slave.Slave will check if received data is correct  |\n");
+    printf("|    to slave. Slave will check if received data is correct |\n");
     printf("|    after getting 1k bytes data.                           |\n");
     printf("|    Press any key to start...                              |\n");
     printf("+-----------------------------------------------------------+\n");
@@ -201,7 +201,7 @@ void AutoFlow_FunctionRxTest()
     /* Set Timeout time 0x3E bit-time and time-out counter enable */
     UART_SetTimeoutCnt(UART1, 0x3E);
 
-    /* Enable RDA\RLS\RTO Interrupt  */
+    /* Enable RDA\RLS\RTO Interrupt */
     UART_EnableInt(UART1, (UART_IER_RDA_IEN_Msk | UART_IER_RLS_IEN_Msk | UART_IER_TOUT_IEN_Msk));
     NVIC_EnableIRQ(UART1_IRQn);      
 
@@ -215,11 +215,15 @@ void AutoFlow_FunctionRxTest()
     {
         if(g_u8RecData[u32i] != (u32i & 0xFF))
         {
-            printf("Compare Data Failed\n");
-            while(1);
+            u32Err = 1;
+            break;
         }
     }
-    printf("\n Receive OK & Check OK\n");
+
+    if( u32Err )
+        printf("Compare Data Failed\n");
+    else
+        printf("\n Receive OK & Check OK\n");
 
     /* Disable RDA\RLS\RTO Interrupt */
     UART_DisableInt(UART1, (UART_IER_RDA_IEN_Msk | UART_IER_RLS_IEN_Msk | UART_IER_TOUT_IEN_Msk));

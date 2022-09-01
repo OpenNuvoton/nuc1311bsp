@@ -1,7 +1,7 @@
 /****************************************************************************
  * @file     main.c
  * @version  V3.00
- * @brief    Show how to wake up system form Power-down mode by UART interrupt.
+ * @brief    Show how to wake up system from Power-down mode by UART interrupt.
  * @note
  * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
  *
@@ -25,8 +25,12 @@ void UART_PowerDownWakeUpTest(void);
 /*---------------------------------------------------------------------------------------------------------*/
 void PowerDownFunction(void)
 {
+    uint32_t u32TimeOutCnt;
+
     /* Check if all the debug messages are finished */
-    UART_WAIT_TX_EMPTY(UART0);
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    UART_WAIT_TX_EMPTY(UART0)
+        if(--u32TimeOutCnt == 0) break;
 
     /* Enter to Power-down mode */
     CLK_PowerDown();
@@ -49,7 +53,7 @@ void SYS_Init(void)
 
     /* Enable UART module clock */
     CLK_EnableModuleClock(UART0_MODULE);
-    CLK_EnableModuleClock(UART1_MODULE);    
+    CLK_EnableModuleClock(UART1_MODULE);
 
     /* Select UART module clock source */
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HIRC, CLK_CLKDIV_UART(1));
@@ -60,7 +64,7 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Set GPB multi-function pins for UART0 RXD and TXD */
-    /* Set GPB multi-function pins for UART1 RXD and nCTS */
+    /* Set GPB multi-function pins for UART1 RXD and TXD */
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk | SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk);
     SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD | SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD );
 
@@ -125,7 +129,9 @@ int32_t main(void)
 
     /* UART wake-up sample function */
     UART_PowerDownWakeUpTest();
-    
+
+    printf("\nUART Sample Program End.\n");
+
     while(1);
 
 }
@@ -147,7 +153,7 @@ void UART1_IRQHandler(void)
         {
             printf("UART nCTS wake-up interrupt happen.\n");
             UART_ClearIntFlag(UART1, UART_ISR_CTSWKIF_Msk);     /* Clear UART CTS wake-up interrupt flag */
-        }   
+        }
     }
 }
 
@@ -161,8 +167,8 @@ void UART_CTSWakeUp(void)
     UART_ClearIntFlag(UART1, UART_ISR_MODEM_INT_Msk);
 
     /* Enable UART CTS wake-up interrupt */
-    UART_EnableInt(UART1, UART_IER_WKCTSIEN_Msk);  
-    NVIC_EnableIRQ(UART1_IRQn);      
+    UART_EnableInt(UART1, UART_IER_WKCTSIEN_Msk);
+    NVIC_EnableIRQ(UART1_IRQn);
 
     printf("System enter to Power-down mode.\n");
     printf("Toggle nCTS of UART1 to wake-up system.\n");
@@ -174,14 +180,14 @@ void UART_CTSWakeUp(void)
     PowerDownFunction();
 
     /* Lock protected registers after entering Power-down mode */
-    SYS_UnlockReg();
+    SYS_LockReg();
 
     /* Clear MODEM interrupt after CTS wake-up interrupt */
     UART_ClearIntFlag(UART1, UART_ISR_MODEM_INT_Msk);
 
     /* Disable UART CTS Wake-up Interrupt */
     UART_DisableInt(UART1, UART_IER_WKCTSIEN_Msk);
-    NVIC_DisableIRQ(UART1_IRQn);      
+    NVIC_DisableIRQ(UART1_IRQn);
 
 }
 
@@ -190,11 +196,12 @@ void UART_CTSWakeUp(void)
 /*---------------------------------------------------------------------------------------------------------*/
 void UART_DataWakeUp(void)
 {
+    uint32_t u32TimeOutCnt;
 
     /* Enable UART data wake-up interrupt */
     UART_EnableInt(UART1, UART_IER_WKDATIEN_Msk);
-    NVIC_EnableIRQ(UART1_IRQn);    
-    
+    NVIC_EnableIRQ(UART1_IRQn);
+
     printf("System enter to Power-down mode.\n");
     printf("Send data with baud rate 110bps to UART1 to wake-up system.\n");
 
@@ -205,11 +212,17 @@ void UART_DataWakeUp(void)
     PowerDownFunction();
 
     /* Lock protected registers after entering Power-down mode */
-    SYS_UnlockReg();
+    SYS_LockReg();
 
     /* Wait to receive wake-up data */
-    while(!UART_IS_RX_READY(UART1));
-    printf("The first wake-up data is 0x%x.\n", UART_READ(UART1));
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    while(!UART_IS_RX_READY(UART1))
+        if(--u32TimeOutCnt == 0) break;
+
+    if(u32TimeOutCnt == 0)
+        printf("Wait for receive wake-up data time-out!\n");
+    else
+        printf("The first wake-up data is 0x%x.\n", UART_READ(UART1));
 
     /* Disable UART Data Wake-up Interrupt */
     UART_DisableInt(UART1, UART_IER_WKDATIEN_Msk);
@@ -255,8 +268,6 @@ void UART_PowerDownWakeUpTest(void)
         default:
             break;
     }
-
-    printf("\nUART Sample Program End.\n");
 }
 
 /*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/

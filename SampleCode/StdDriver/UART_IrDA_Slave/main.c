@@ -23,11 +23,12 @@ void IrDA_FunctionRxTest(void);
 
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*  IrDA Function Receive Test                                                                            */
+/*  IrDA Function Receive Test                                                                             */
 /*---------------------------------------------------------------------------------------------------------*/
 void IrDA_FunctionRxTest()
 {
     uint8_t u8InChar = 0xFF;
+    uint32_t u32TimeOutCnt;
 
     printf("\n");
     printf("+-----------------------------------------------------------+\n");
@@ -78,7 +79,9 @@ void IrDA_FunctionRxTest()
 
     /* Reset Rx FIFO */
     UART1->FCR |= UART_FCR_RFR_Msk;
-    while(UART1->FCR & UART_FCR_RFR_Msk);
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    while(UART1->FCR & UART_FCR_RFR_Msk)
+        if(--u32TimeOutCnt == 0) break;
 
     printf("Waiting...\n");
 
@@ -173,7 +176,7 @@ int32_t main(void)
 {
 
     /* Unlock protected registers */
-   SYS_UnlockReg();
+    SYS_UnlockReg();
 
     /* Init System, peripheral clock and multi-function I/O */
     SYS_Init();

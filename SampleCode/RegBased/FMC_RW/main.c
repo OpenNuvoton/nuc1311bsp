@@ -13,6 +13,7 @@
 #define PLLCON_SETTING      CLK_PLLCON_50MHz_HXT
 #define PLL_CLOCK           50000000
 
+int32_t g_FMC_i32ErrCode;
 
 void SYS_Init(void)
 {
@@ -45,11 +46,11 @@ void SYS_Init(void)
     CLK->CLKSEL1 = CLK_CLKSEL1_UART_S_PLL;
 
     /* Update System Core Clock */
-    /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
+    /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CyclesPerUs automatically. */
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -92,9 +93,9 @@ int main()
     UART0_Init();
 
     printf("\n\n");
-    printf("+----------------------------------------+\n");
+    printf("+-----------------------------------------+\n");
     printf("|          NUC1311 FMC Sample Code        |\n");
-    printf("+----------------------------------------+\n");
+    printf("+-----------------------------------------+\n");
 
     /* Enable FMC ISP functions */
     FMC->ISPCON |=  FMC_ISPCON_ISPEN_Msk | FMC_ISPCON_APUEN_Msk | FMC_ISPCON_LDUEN_Msk | FMC_ISPCON_CFGUEN_Msk;

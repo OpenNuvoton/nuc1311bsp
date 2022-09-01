@@ -49,8 +49,8 @@ void SYS_Init(void)
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to Power-down mode */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk;     
-    
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
+
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
@@ -63,11 +63,11 @@ void SYS_Init(void)
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_PLL;
 
     /* Update System Core Clock */
-    /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
+    /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CyclesPerUs automatically. */
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /* Enable UART module clock */
     CLK->APBCLK |= CLK_APBCLK_UART0_EN_Msk;
@@ -153,7 +153,7 @@ void UART_TEST_HANDLE()
     uint8_t u8InChar = 0xFF;
     uint32_t u32IntSts = UART0->ISR;
 
-    /* Receive Data Available Interrupt Handle */     
+    /* Receive Data Available Interrupt Handle */
     if(u32IntSts & UART_ISR_RDA_INT_Msk)
     {
         printf("\nInput:");
@@ -161,14 +161,14 @@ void UART_TEST_HANDLE()
         /* Get all the input characters */
         while(UART0->ISR & UART_ISR_RDA_IF_Msk)
         {
-            
-            /* Receive Line Status Error Handle */ 
+
+            /* Receive Line Status Error Handle */
             if(u32IntSts & UART_ISR_RLS_INT_Msk)
             {                
                 /* Clear Receive Line Status Interrupt */
                 UART0->FSR = UART_FSR_BIF_Msk | UART_FSR_FEF_Msk | UART_FSR_PEF_Msk; 
             }                
-                                  
+
             /* Get the character from UART Buffer */
             u8InChar = UART0->RBR;
 
@@ -191,7 +191,7 @@ void UART_TEST_HANDLE()
         printf("\nTransmission Test:");
     }
 
-    /* Transmit Holding Register Empty Interrupt Handle */ 
+    /* Transmit Holding Register Empty Interrupt Handle */
     if(u32IntSts & UART_ISR_THRE_INT_Msk)
     {
         uint16_t tmp;
@@ -199,20 +199,20 @@ void UART_TEST_HANDLE()
         if(g_u32comRhead != tmp)
         {
             u8InChar = g_u8RecData[g_u32comRhead];
-            while(UART_IS_TX_FULL(UART0));  /* Wait Tx is not full to transmit data */                           
+            while(UART_IS_TX_FULL(UART0));  /* Wait Tx is not full to transmit data */
             UART_WRITE(UART0, u8InChar);
             g_u32comRhead = (g_u32comRhead == (RXBUFSIZE - 1)) ? 0 : (g_u32comRhead + 1);
             g_u32comRbytes--;
         }
     }
-    
+
     /* Buffer Error Interrupt Handle */    
     if(u32IntSts & UART_ISR_BUF_ERR_INT_Msk)   
     {
         /* Clear Buffer Error Interrupt */
         UART0->FSR = UART_FSR_RX_OVER_IF_Msk | UART_FSR_TX_OVER_IF_Msk;       
     }       
-    
+
 }
 
 /*---------------------------------------------------------------------------------------------------------*/

@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include "NUC1311.h"
 
-#define PLLCON_SETTING      CLK_PLLCON_50MHz_HXT
 #define PLL_CLOCK           50000000
 
 volatile uint32_t slave_buff_addr;
@@ -223,11 +222,11 @@ int32_t main(void)
     */
 
     printf("\n");
-    printf("+-----------------------------------------------------------------+\n");
+    printf("+------------------------------------------------------------------+\n");
     printf("| NUC1311 I2C Driver Sample Code (Slave) for access Slave (GC Mode)|\n");
-    printf("|                                                                 |\n");
-    printf("| I2C Master (I2C0) <---> I2C Slave(I2C0)(Address: 0x00)          |\n");
-    printf("+-----------------------------------------------------------------+\n");
+    printf("|                                                                  |\n");
+    printf("| I2C Master (I2C0) <---> I2C Slave(I2C0)(Address: 0x00)           |\n");
+    printf("+------------------------------------------------------------------+\n");
 
     printf("Configure I2C0 as a slave.\n");
     printf("The I/O connection for I2C0:\n");
@@ -263,11 +262,13 @@ int32_t main(void)
         if(g_au8SlvData[i] != g_au8SlvTxData[2])
         {
             printf("GC Mode Receive data fail.\n");
-            while(1);
+            goto lexit;
         }
     }
 
     printf("GC Mode receive data OK.\n");
+
+lexit:
 
     s_I2C0HandlerFn = NULL;
 
