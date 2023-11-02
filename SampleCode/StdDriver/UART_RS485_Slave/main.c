@@ -191,7 +191,7 @@ void RS485_FunctionTest()
             2.The received byte, parity bit is '1' , is considered "ADDRESS".
             3.The received byte, parity bit is '0' , is considered "DATA".  (Default)
             4.AAD: The slave will ignore any data until ADDRESS match ADDR_MATCH value.
-              When RLS and RDA interrupt is happened,it means the ADDRESS is received.
+              When RLS and RDA interrupt is happened, it means the ADDRESS is received.
               Check if RS485_ADD_DETF is set and read UA_RBR to clear ADDRESS stored in RX FIFO.
 
               NMM: The slave will ignore data byte until disable RX_DIS.
@@ -261,7 +261,7 @@ void SYS_Init(void)
                      
     /* Set GPA multi-function pin for UART1 nRTS(PA.8) */
     SYS->GPA_MFP =(SYS->GPA_MFP & (~SYS_GPA_MFP_PA8_Msk)) | SYS_GPA_MFP_PA8_UART1_nRTS;
-    SYS->ALT_MFP4  =(SYS->ALT_MFP4 & (~SYS_ALT_MFP4_PA8_Msk)) | SYS_ALT_MFP4_PA8_UART1_nRTS;     
+    SYS->ALT_MFP4 = (SYS->ALT_MFP4 & (~SYS_ALT_MFP4_PA8_Msk)) | SYS_ALT_MFP4_PA8_UART1_nRTS;
 
 }
 

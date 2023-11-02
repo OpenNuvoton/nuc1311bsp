@@ -236,7 +236,7 @@ int main()
                 /* Set Main Stack Pointer register of new boot */
                 __set_MSP(M32(0));
 #endif
-    
+
                 /* Call reset handler of new boot */
                 ResetFunc();
 //                /* Software reset to boot to LDROM */

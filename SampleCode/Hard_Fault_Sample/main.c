@@ -39,7 +39,7 @@ void SYS_Init(void)
     /* Waiting for external XTAL clock ready */
     CLK_WaitClockReady(CLK_CLKSTATUS_XTL12M_STB_Msk);
 
-    /* Set core clock as HCLK_CLOCK */
+    /* Set core clock as PLL_CLOCK */
     CLK_SetCoreClock(PLL_CLOCK);
 
     /* Enable UART module clock */
@@ -75,7 +75,7 @@ void UART0_Init()
 /*---------------------------------------------------------------------------------------------------------*/
 int32_t main(void)
 {
-    
+
    char *tmp = 0;
 
     /* Unlock protected registers */
