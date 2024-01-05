@@ -4,9 +4,9 @@
  * @brief    NUC1311 series PWM driver source file
  *
  * @note
- * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright (C) 2010 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include "NUC1311.h"
 
@@ -847,7 +847,7 @@ uint32_t PWM_GetZeroIntFlag(PWM_T *pwm, uint32_t u32ChannelNum)
  */
 void PWM_SetClockSource(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32ClkSrcSel)
 {
-    (pwm)->CLKSRC = (pwm)->CLKSRC & ~(PWM_CLKSRC_ECLKSRC0_Msk << ((u32ChannelNum >> 1) * PWM_CLKSRC_ECLKSRC2_Pos)) | \
+    (pwm)->CLKSRC = ((pwm)->CLKSRC & ~(PWM_CLKSRC_ECLKSRC0_Msk << ((u32ChannelNum >> 1) * PWM_CLKSRC_ECLKSRC2_Pos))) | \
                     (u32ClkSrcSel << ((u32ChannelNum >> 1) * PWM_CLKSRC_ECLKSRC2_Pos));
 }
 

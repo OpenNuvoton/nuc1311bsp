@@ -6,7 +6,8 @@
  *           This sample code needs to connect SPI0_MISO0 pin and SPI0_MOSI0 pin together.
  *           It will compare the received data with transmitted data.
  * @note
- * Copyright (C) 2019 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include <stdio.h>
 #include "NUC1311.h"
@@ -18,7 +19,6 @@ uint32_t g_au32DestinationData[TEST_COUNT];
 
 /* Function prototype declaration */
 void SYS_Init(void);
-void UART0_Init(void);
 void SPI_Init(void);
 
 /* ------------- */
@@ -36,8 +36,8 @@ int main(void)
     /* Lock protected registers */
     SYS_LockReg();
 
-    /* Init UART0 for printf */
-    UART0_Init();
+    /* Configure UART0: 115200, 8-bit word, no parity bit, 1 stop bit. */
+    UART_Open(UART0, 115200);
 
     /* Init SPI */
     SPI_Init();
@@ -75,12 +75,12 @@ int main(void)
         while(1)
         {
             /* Write to TX register */
-            SPI0->TX = g_au32SourceData[u32DataCount];
+            SPI_WRITE_TX(SPI0, g_au32SourceData[u32DataCount]);
             /* Trigger SPI data transfer */
-            SPI0->CNTRL |= SPI_CNTRL_GO_BUSY_Msk;
+            SPI_TRIGGER(SPI0);
             /* Check SPI0 busy status */
             u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
-            while(SPI0->CNTRL & SPI_CNTRL_GO_BUSY_Msk)
+            while(SPI_IS_BUSY(SPI0))
             {
                 if(--u32TimeOutCnt == 0)
                 {
@@ -94,9 +94,9 @@ int main(void)
                 break;
 
             /* Read received data */
-            g_au32DestinationData[u32DataCount] = SPI0->RX;
+            g_au32DestinationData[u32DataCount] = SPI_READ_RX(SPI0);
             u32DataCount++;
-            if(u32DataCount > TEST_COUNT)
+            if(u32DataCount >= TEST_COUNT)
                 break;
         }
 
@@ -120,7 +120,7 @@ int main(void)
         printf(" [PASS]\n\n");
 
     /* Close SPI0 */
-    CLK->APBCLK &= (~CLK_APBCLK_SPI0_EN_Msk);
+    SPI_Close(SPI0);
 
     while(1);
 }
@@ -133,19 +133,24 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Enable external 12MHz XTAL */
-    CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
+    CLK_EnableXtalRC(CLK_PWRCON_XTL12M_EN_Msk);
 
     /* Waiting for clock ready */
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk));
+    CLK_WaitClockReady(CLK_CLKSTATUS_XTL12M_STB_Msk);
 
-    /* Select HXT as the clock source of HCLK */
-    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HXT;
+    /* Switch HCLK clock source to HXT and HCLK source divide 1 */
+    CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_HXT, CLK_CLKDIV_HCLK(1));
 
-    /* Select HXT as the clock source of UART; select HCLK as the clock source of SPI0. */
-    CLK->CLKSEL1 = (CLK->CLKSEL1 & (~(CLK_CLKSEL1_UART_S_Msk | CLK_CLKSEL1_SPI0_S_Msk))) | (CLK_CLKSEL1_UART_S_HXT | CLK_CLKSEL1_SPI0_S_HCLK);
+    /* Select HXT as the clock source of UART0 */
+    CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
 
-    /* Enable UART and SPI0 clock */
-    CLK->APBCLK = CLK_APBCLK_UART0_EN_Msk | CLK_APBCLK_SPI0_EN_Msk;
+    /* Select HCLK as the clock source of SPI0 */
+    CLK_SetModuleClock(SPI0_MODULE, CLK_CLKSEL1_SPI0_S_HCLK, MODULE_NoMsk);
+
+    /* Enable UART peripheral clock */
+    CLK_EnableModuleClock(UART0_MODULE);
+    /* Enable SPI0 peripheral clock */
+    CLK_EnableModuleClock(SPI0_MODULE);
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -166,28 +171,17 @@ void SYS_Init(void)
     SystemCoreClockUpdate();
 }
 
-void UART0_Init(void)
-{
-    /* Word length is 8 bits; 1 stop bit; no parity bit. */
-    UART0->LCR = UART_LCR_WLS_Msk;
-    /* Using mode 2 calculation: UART bit rate = UART peripheral clock rate / (BRD setting + 2) */
-    /* UART peripheral clock rate 12MHz; UART bit rate 115200 bps. */
-    /* 12000000 / 115200 bps ~= 104 */
-    /* 104 - 2 = 0x66. */
-    UART0->BAUD = UART_BAUD_DIV_X_EN_Msk | UART_BAUD_DIV_X_ONE_Msk | (0x66);
-}
-
 void SPI_Init(void)
 {
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init SPI                                                                                                */
     /*---------------------------------------------------------------------------------------------------------*/
-    /* Configure SPI0 as a master, clock idle low, 32-bit transaction, drive output on falling clock edge and latch input on rising edge. */
-    SPI0->CNTRL = SPI_MASTER | SPI_CNTRL_TX_NEG_Msk;
-    /* Enable the automatic hardware slave select function. Select the SPI0_SS0 pin and configure as low-active. */
-    SPI0->SSR = SPI_SSR_AUTOSS_Msk | SPI_SS0;
-    /* Set IP clock divider. SPI clock rate = HCLK / ((0+1)*2) = 6 MHz */
-    SPI0->DIVIDER = (SPI0->DIVIDER & (~SPI_DIVIDER_DIVIDER_Msk)) | 0;
+    /* Configure as a master, clock idle low, 32-bit transaction, drive output on falling clock edge and latch input on rising edge. */
+    /* Set IP clock divider. SPI clock rate = 2MHz */
+    SPI_Open(SPI0, SPI_MASTER, SPI_MODE_0, 32, 2000000);
+
+    /* Enable the automatic hardware slave select function. Select the SS pin and configure as low-active. */
+    SPI_EnableAutoSS(SPI0, SPI_SS0, SPI_SS_ACTIVE_LOW);
 }
 
 /*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/
