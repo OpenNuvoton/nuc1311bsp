@@ -8,7 +8,6 @@
  * @note
  *
  * @copyright SPDX-License-Identifier: Apache-2.0
- *
  * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
@@ -29,7 +28,7 @@
   * for a particular purpose, and non-infringement of intellectual property rights.
   *
   * <b>Copyright Notice</b>
-  *
+  * Copyright (C) 2014~2024 Nuvoton Technology Corp. All rights reserved.
   */
 
 
