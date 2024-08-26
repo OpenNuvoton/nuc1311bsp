@@ -217,6 +217,8 @@ void RS485_FunctionTest()
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -225,24 +227,30 @@ void SYS_Init(void)
     CLK->PWRCON |= CLK_PWRCON_OSC22M_EN_Msk;
 
     /* Waiting for Internal RC clock ready */
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
 
     /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HIRC;
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to Power-down mode */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk;      
-    
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
+
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
     /* Waiting for external XTAL clock ready */
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
 
     /* Set core clock as PLL_CLOCK from PLL */
     CLK->PLLCON = PLLCON_SETTING;
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_PLL;
 
     /* Update System Core Clock */
@@ -266,10 +274,10 @@ void SYS_Init(void)
     /* Set GPB multi-function pins for UART1 RXD(PB.4) and TXD(PB.5) */
     SYS->GPB_MFP &= ~(SYS_GPB_MFP_PB0_Msk | SYS_GPB_MFP_PB1_Msk | SYS_GPB_MFP_PB4_Msk | SYS_GPB_MFP_PB5_Msk);
     SYS->GPB_MFP |= (SYS_GPB_MFP_PB0_UART0_RXD | SYS_GPB_MFP_PB1_UART0_TXD | SYS_GPB_MFP_PB4_UART1_RXD | SYS_GPB_MFP_PB5_UART1_TXD );
-                     
+
     /* Set GPA multi-function pin for UART1 nRTS(PA.8) */
     SYS->GPA_MFP =(SYS->GPA_MFP & (~SYS_GPA_MFP_PA8_Msk)) | SYS_GPA_MFP_PA8_UART1_nRTS;
-    SYS->ALT_MFP4  =(SYS->ALT_MFP4 & (~SYS_ALT_MFP4_PA8_Msk)) | SYS_ALT_MFP4_PA8_UART1_nRTS;     
+    SYS->ALT_MFP4  =(SYS->ALT_MFP4 & (~SYS_ALT_MFP4_PA8_Msk)) | SYS_ALT_MFP4_PA8_UART1_nRTS;
 
 }
 

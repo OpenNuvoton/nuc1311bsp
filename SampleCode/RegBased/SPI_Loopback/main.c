@@ -127,6 +127,8 @@ int main(void)
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
+
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
@@ -185,4 +187,3 @@ void SPI_Init(void)
 }
 
 /*** (C) COPYRIGHT 2019 Nuvoton Technology Corp. ***/
-

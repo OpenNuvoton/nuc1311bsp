@@ -35,6 +35,8 @@ void UART_FunctionTest(void);
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
+
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -43,7 +45,9 @@ void SYS_Init(void)
     CLK->PWRCON |= CLK_PWRCON_OSC22M_EN_Msk;
 
     /* Waiting for Internal RC clock ready */
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
 
     /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HIRC;
@@ -56,11 +60,15 @@ void SYS_Init(void)
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
     /* Waiting for external XTAL clock ready */
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
 
     /* Set core clock as PLL_CLOCK from PLL */
     CLK->PLLCON = PLLCON_SETTING;
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_PLL;
 
     /* Update System Core Clock */
@@ -165,10 +173,10 @@ void UART_TEST_HANDLE()
 
             /* Receive Line Status Error Handle */
             if(u32IntSts & UART_ISR_RLS_INT_Msk)
-            {                
+            {
                 /* Clear Receive Line Status Interrupt */
-                UART0->FSR = UART_FSR_BIF_Msk | UART_FSR_FEF_Msk | UART_FSR_PEF_Msk; 
-            }                
+                UART0->FSR = UART_FSR_BIF_Msk | UART_FSR_FEF_Msk | UART_FSR_PEF_Msk;
+            }
 
             /* Get the character from UART Buffer */
             u8InChar = UART0->RBR;
@@ -207,12 +215,12 @@ void UART_TEST_HANDLE()
         }
     }
 
-    /* Buffer Error Interrupt Handle */    
-    if(u32IntSts & UART_ISR_BUF_ERR_INT_Msk)   
+    /* Buffer Error Interrupt Handle */
+    if(u32IntSts & UART_ISR_BUF_ERR_INT_Msk)
     {
         /* Clear Buffer Error Interrupt */
-        UART0->FSR = UART_FSR_RX_OVER_IF_Msk | UART_FSR_TX_OVER_IF_Msk;       
-    }       
+        UART0->FSR = UART_FSR_RX_OVER_IF_Msk | UART_FSR_TX_OVER_IF_Msk;
+    }
 
 }
 
