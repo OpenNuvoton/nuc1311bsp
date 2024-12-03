@@ -63,12 +63,12 @@ int32_t SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
-    /* Set PA multi-function pins for I2C1 SDA and SCL */
+    /* Set PA multi-function pins for I2C0 SDA and SCL */
     SYS->GPA_MFP &= ~(SYS_GPA_MFP_PA8_Msk | SYS_GPA_MFP_PA9_Msk);
     SYS->GPA_MFP |= (SYS_GPA_MFP_PA8_I2C0_SDA | SYS_GPA_MFP_PA9_I2C0_SCL);
 
     /* I2C clock pin enable schmitt trigger */
-    SYS->GPA_MFP |= (9<<SYS_GPA_MFP_GPA_TYPE_Pos);
+    SYS->GPA_MFP |= (BIT9 << SYS_GPA_MFP_GPA_TYPE_Pos);
 
     return 0;
 }
