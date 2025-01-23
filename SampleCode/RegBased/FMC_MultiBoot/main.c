@@ -25,7 +25,6 @@ int32_t g_FMC_i32ErrCode;
 
 void SYS_Init(void)
 {
-	uint32_t u32TimeOutCnt;
 
     int32_t i;
     /*---------------------------------------------------------------------------------------------------------*/
@@ -119,11 +118,16 @@ int32_t main(void)
 
         To use this sample code, please:
         1. Build all targets and download to device individually. The targets are:
-            FMC_MultiBoot, RO=0x0
-            FMC_Boot0, RO=0x1000
-            FMC_Boot1, RO=0x2000
-            FMC_Boot2, RO=0x3000
-            FMC_Boot3, RO=0x4000
+           For Keil/IAR project,
+							 FMC_MultiBoot, RO=0x0
+               FMC_Boot0, RO=0x2000
+               FMC_Boot1, RO=0x4000
+               FMC_Boot2, RO=0x6000
+               FMC_Boot3, RO=0x8000
+					 For GCC project,
+               FMC_MultiBoot, RO=0x0
+               FMC_Boot1, RO=0x4000
+               FMC_Boot3, RO=0x8000
         2. Reset MCU to execute FMC_MultiBoot.
 
     */
@@ -185,33 +189,51 @@ int32_t main(void)
             goto lexit;
         }
     }
-
+#if (defined(__ARMCC_VERSION) || defined(__ICCARM__))
     printf("Select one boot image: \n");
-    printf("[0] Boot 0, base = 0x1000\n");
-    printf("[1] Boot 1, base = 0x2000\n");
-    printf("[2] Boot 2, base = 0x3000\n");
-    printf("[3] Boot 3, base = 0x4000\n");
+    printf("[0] Boot 0, base = 0x2000\n");
+    printf("[1] Boot 1, base = 0x4000\n");
+    printf("[2] Boot 2, base = 0x6000\n");
+    printf("[3] Boot 3, base = 0x8000\n");
     printf("[Others] Boot, base = 0x0\n");
-
     ch = getchar();
     switch(ch)
     {
     case '0':
-        u32BootAddr = 0x1000;
-        break;
-    case '1':
         u32BootAddr = 0x2000;
         break;
+    case '1':
+        u32BootAddr = 0x4000;
+        break;
     case '2':
-        u32BootAddr = 0x3000;
+        u32BootAddr = 0x6000;
         break;
     case '3':
-        u32BootAddr = 0x4000;
+        u32BootAddr = 0x8000;
         break;
     default:
         u32BootAddr = 0x0000;
         break;
     }
+#else
+		printf("Select one boot image: \n");
+    printf("[1] Boot 1, base = 0x4000\n");
+    printf("[3] Boot 3, base = 0x8000\n");
+    printf("[Others] Boot, base = 0x0\n");
+
+    ch = getchar();
+    switch(ch) {
+    case '1':
+        u32BootAddr = 0x4000;
+        break;
+    case '3':
+        u32BootAddr = 0x8000;
+        break;
+    default:
+        FMC_SetVectorPageAddr(0x0);
+        break;
+    }
+#endif
 
     FMC->ISPCMD = FMC_ISPCMD_VECMAP; /* Set ISP Command Code */
     FMC->ISPADR = u32BootAddr;       /* The address of specified page which will be map to address 0x0*/
