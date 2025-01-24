@@ -18,9 +18,9 @@
 #endif
 
 #define PLL_CLOCK           50000000
-
-void ProcessHardFault(void){}
-
+void ProcessHardFault(void){ while(1); /* Halt here if hard fault occurs. */ }
+void SH_Return(void){};
+	
 void SYS_Init(void)
 {
     /*---------------------------------------------------------------------------------------------------------*/
