@@ -34,11 +34,19 @@
 #define SJW_MAX   4ul
 #define BRP_INC   1ul
 
+#if defined(CAN1)
+static uint8_t gu8LockCanIf[2][2] = {{0U}};    /* The chip has two CANs. */
+#elif defined(CAN0) || defined(CAN)
+static uint8_t gu8LockCanIf[1][2] = {{0U}};    /* The chip only has one CAN. */
+#endif
+
 #define RETRY_COUNTS    (0x10000000)
 
 
 
-static uint32_t GetFreeIF(CAN_T  *tCAN);
+static uint32_t LockIF(CAN_T *tCAN);
+static uint32_t LockIF_TL(CAN_T *tCAN);
+static void ReleaseIF(CAN_T *tCAN, uint32_t u32IfNo);
 static int can_update_spt(int sampl_pt, int tseg, int *tseg1, int *tseg2);
 
 
@@ -46,25 +54,117 @@ static int can_update_spt(int sampl_pt, int tseg, int *tseg1, int *tseg2);
 #define DEBUG_PRINTF(...)
 
 /**
-  * @brief Check if any interface is available.
+  * @brief Check if any interface is available then lock it for usage.
   * @param[in] tCAN The pointer to CAN module base address.
   * @retval 0 IF0 is free
   * @retval 1 IF1 is free
   * @retval 2 No IF is free
-  * @details Search the first free message interface, starting from 0.
+  * @details Search the first free message interface, starting from 0. If a interface is
+  *          available, set a flag to lock the interface.
   */
-static uint32_t GetFreeIF(CAN_T  *tCAN)
+static uint32_t LockIF(CAN_T *tCAN)
 {
-    if((tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk) == 0)
-        return 0;
-    else if((tCAN->IF[1].CREQ  & CAN_IF_CREQ_BUSY_Msk) == 0)
-        return 1;
-    else
-        return 2;
+    uint32_t u32CanNo;
+    uint32_t u32FreeIfNo;
+    uint32_t u32IntMask;
+
+#if defined(CAN1)
+    u32CanNo = (tCAN == CAN1) ? 1 : 0;
+#else // defined(CAN0) || defined(CAN)
+    u32CanNo = 0U;
+#endif
+
+    u32FreeIfNo = 2U;
+
+    /* Disable CAN interrupt */
+    u32IntMask = tCAN->CON & (CAN_CON_IE_Msk | CAN_CON_SIE_Msk | CAN_CON_EIE_Msk);
+    tCAN->CON = tCAN->CON & ~(CAN_CON_IE_Msk | CAN_CON_SIE_Msk | CAN_CON_EIE_Msk);
+
+    /* Check interface 1 is available or not */
+    if((tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk) == 0U)
+    {
+        if(gu8LockCanIf[u32CanNo][0] == (uint8_t)FALSE)
+        {
+            gu8LockCanIf[u32CanNo][0] = (uint8_t)TRUE;
+            u32FreeIfNo = 0U;
+        }
+    }
+
+    /* Or check interface 2 is available or not */
+    if(u32FreeIfNo == 2U)
+    {
+        if((tCAN->IF[1].CREQ & CAN_IF_CREQ_BUSY_Msk) == 0U)
+        {
+            if(gu8LockCanIf[u32CanNo][1] == (uint8_t)FALSE)
+            {
+                gu8LockCanIf[u32CanNo][1] = (uint8_t)TRUE;
+                u32FreeIfNo = 1U;
+            }
+        }
+    }
+
+    /* Enable CAN interrupt */
+    tCAN->CON |= u32IntMask;
+
+    return u32FreeIfNo;
 }
 
+/**
+  * @brief Check if any interface is available in a time limitation then lock it for usage.
+  * @param[in] tCAN The pointer to CAN module base address.
+  * @retval 0 IF0 is free
+  * @retval 1 IF1 is free
+  * @retval 2 No IF is free
+  * @details Search the first free message interface, starting from 0. If no interface is
+  *          it will try again until time out. If a interface is available,  set a flag to
+  *          lock the interface.
+  */
+static uint32_t LockIF_TL(CAN_T *tCAN)
+{
+    uint32_t u32Count;
+    uint32_t u32FreeIfNo = 0U;
 
+    for(u32Count = 0U; u32Count < (uint32_t)RETRY_COUNTS; u32Count++)
+    {
+        if((u32FreeIfNo = LockIF(tCAN)) != 2U)
+        {
+            break;
+        }
+    }
 
+    return u32FreeIfNo;
+}
+
+/**
+  * @brief Release locked interface.
+  * @param[in] tCAN The pointer to CAN module base address.
+  * @param[in] u32Info The interface number, 0 or 1.
+  * @return none
+  * @details Release the locked interface.
+  */
+static void ReleaseIF(CAN_T *tCAN, uint32_t u32IfNo)
+{
+    uint32_t u32IntMask;
+    uint32_t u32CanNo;
+
+    if(u32IfNo < 2U)
+    {
+#if defined(CAN1)
+        u32CanNo = (tCAN == CAN1) ? 1U : 0U;
+#else // defined(CAN0) || defined(CAN)
+        u32CanNo = 0U;
+#endif
+
+        /* Disable CAN interrupt */
+        u32IntMask = tCAN->CON & (CAN_CON_IE_Msk | CAN_CON_SIE_Msk | CAN_CON_EIE_Msk);
+        tCAN->CON = tCAN->CON & ~(CAN_CON_IE_Msk | CAN_CON_SIE_Msk | CAN_CON_EIE_Msk);
+
+        gu8LockCanIf[u32CanNo][u32IfNo] = (uint8_t)FALSE;
+
+        /* Enable CAN interrupt */
+        tCAN->CON |= u32IntMask;
+    }
+}
 
 static int can_update_spt(int sampl_pt, int tseg, int *tseg1, int *tseg2)
 {
@@ -364,7 +464,8 @@ int32_t CAN_SetRxMsgObjAndMsk(CAN_T *tCAN, uint8_t u8MsgObj, uint8_t u8idType, u
 {
     uint8_t u8MsgIfNum;
 
-    if((u8MsgIfNum = GetFreeIF(tCAN)) == 2)                         /* Check Free Interface for configure */
+    /* Get and lock a free interface */
+    if((u8MsgIfNum = (uint8_t)LockIF_TL(tCAN)) == 2U)
     {
         return FALSE;
     }
@@ -400,6 +501,7 @@ int32_t CAN_SetRxMsgObjAndMsk(CAN_T *tCAN, uint8_t u8MsgObj, uint8_t u8idType, u
     tCAN->IF[u8MsgIfNum].DAT_B2  = 0;
 
     tCAN->IF[u8MsgIfNum].CREQ = 1 + u8MsgObj;
+    ReleaseIF(tCAN, u8MsgIfNum);
 
     return TRUE;
 }
@@ -425,7 +527,8 @@ int32_t CAN_SetRxMsgObj(CAN_T *tCAN, uint8_t u8MsgObj, uint8_t u8idType, uint32_
 {
     uint8_t u8MsgIfNum = 0;
 
-    if((u8MsgIfNum = GetFreeIF(tCAN)) == 2)                         /* Check Free Interface for configure */
+    /* Get and lock a free interface */
+    if((u8MsgIfNum = (uint8_t)LockIF_TL(tCAN)) == 2U)
     {
         return FALSE;
     }
@@ -444,7 +547,6 @@ int32_t CAN_SetRxMsgObj(CAN_T *tCAN, uint8_t u8MsgObj, uint8_t u8idType, uint32_
         tCAN->IF[u8MsgIfNum].ARB2 = CAN_IF_ARB2_MSGVAL_Msk | CAN_IF_ARB2_XTD_Msk | (u32id & 0x1FFF0000) >> 16;
     }
 
-    //tCAN->IF[u8MsgIfNum].MCON |= CAN_IF_MCON_UMASK_Msk | CAN_IF_MCON_RXIE_Msk;
     tCAN->IF[u8MsgIfNum].MCON = CAN_IF_MCON_UMASK_Msk | CAN_IF_MCON_RXIE_Msk;
     if(u8singleOrFifoLast)
         tCAN->IF[u8MsgIfNum].MCON |= CAN_IF_MCON_EOB_Msk;
@@ -457,6 +559,7 @@ int32_t CAN_SetRxMsgObj(CAN_T *tCAN, uint8_t u8MsgObj, uint8_t u8idType, uint32_
     tCAN->IF[u8MsgIfNum].DAT_B2  = 0;
 
     tCAN->IF[u8MsgIfNum].CREQ = 1 + u8MsgObj;
+    ReleaseIF(tCAN, u8MsgIfNum);
 
     return TRUE;
 }
@@ -707,13 +810,10 @@ uint32_t CAN_Open(CAN_T *tCAN, uint32_t u32BaudRate, uint32_t u32Mode)
 int32_t CAN_SetTxMsg(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
 {
     uint8_t u8MsgIfNum = 0;
-    uint32_t i = 0;
 
-    while((u8MsgIfNum = GetFreeIF(tCAN)) == 2)
+    if((u8MsgIfNum = (uint8_t)LockIF_TL(tCAN)) == 2U)
     {
-        i++;
-        if(i > 0x10000000)
-            return FALSE;
+        return FALSE;
     }
 
     /* update the contents needed for transmission*/
@@ -747,6 +847,7 @@ int32_t CAN_SetTxMsg(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
     tCAN->IF[u8MsgIfNum].MCON   =  CAN_IF_MCON_NEWDAT_Msk | pCanMsg->DLC | CAN_IF_MCON_TXIE_Msk | CAN_IF_MCON_EOB_Msk;
     tCAN->IF[u8MsgIfNum].CREQ   = 1 + u32MsgNum;
 
+    ReleaseIF(tCAN, u8MsgIfNum);
     return TRUE;
 }
 
@@ -971,27 +1072,17 @@ int32_t CAN_Receive(CAN_T *tCAN, uint32_t u32MsgNum, STR_CANMSG_T* pCanMsg)
 void CAN_CLR_INT_PENDING_BIT(CAN_T *tCAN, uint8_t u32MsgNum)
 {
     uint32_t u32MsgIfNum = 0;
-    uint32_t u32IFBusyCount = 0;
 
-    while(u32IFBusyCount < RETRY_COUNTS)
+    if((u32MsgIfNum = LockIF_TL(tCAN)) == 2UL)
     {
-        if((tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk) == 0)
-        {
-            u32MsgIfNum = 0;
-            break;
-        }
-        else if((tCAN->IF[1].CREQ  & CAN_IF_CREQ_BUSY_Msk) == 0)
-        {
-            u32MsgIfNum = 1;
-            break;
-        }
-
-        u32IFBusyCount++;
+        u32MsgIfNum = 0UL;
     }
 
-    tCAN->IF[u32MsgIfNum].CMASK = CAN_IF_CMASK_CLRINTPND_Msk | CAN_IF_CMASK_TXRQSTNEWDAT_Msk;
+    tCAN->IF[u32MsgIfNum].CMASK = ((tCAN->IF[u32MsgIfNum].CMASK & CAN_IF_CMASK_WRRD_Msk) |
+                                  CAN_IF_CMASK_CLRINTPND_Msk | CAN_IF_CMASK_TXRQSTNEWDAT_Msk);
     tCAN->IF[u32MsgIfNum].CREQ = 1 + u32MsgNum;
 
+    ReleaseIF(tCAN, u32MsgIfNum);
 }
 
 
