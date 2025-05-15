@@ -261,6 +261,16 @@ extern "C"
 #define PWM_SET_CMR(pwm, u32ChannelNum, u32CMR) ((pwm)->CMPDAT[(u32ChannelNum)] = (u32CMR))
 
 /**
+ * @brief This macro set the duty cycle value of the selected PWM channel
+ * @param[in] pwm The pointer of the specified PWM module
+ * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
+ * @param[in] u32Duty duty cycle value of specified PWM channel. Valid values are between 0~0xFFFF
+ * @return None
+ * @note Equivalent to the PWM_SET_CMR() macro. Created to improve understandability.
+ */
+#define PWM_SET_DUTY_COUNT(pwm, u32ChannelNum, u32Duty) PWM_SET_CMR(pwm, u32ChannelNum, u32Duty)
+
+/**
  * @brief This macro set the period of the selected channel
  * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0, 2, 4. Every two channels share the same setting.
@@ -272,6 +282,16 @@ extern "C"
  * \hideinitializer
  */
 #define PWM_SET_CNR(pwm, u32ChannelNum, u32CNR)  ((pwm)->PERIOD[(((u32ChannelNum) >> 1) << 1)] = (u32CNR))
+
+/**
+ * @brief This macro set the period of the selected PWM channel
+ * @param[in] pwm The pointer of the specified PWM module
+ * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
+ * @param[in] u32Period Period of specified PWM channel. Valid values are between 0~0xFFFF
+ * @return None
+ * @note Equivalent to the PWM_SET_CNR() macro. Created to improve understandability.
+ */
+#define PWM_SET_PERIOD_COUNT(pwm, u32ChannelNum, u32Period) PWM_SET_CNR(pwm, u32ChannelNum, u32Period)
 
 /**
  * @brief This macro set the PWM aligned type
