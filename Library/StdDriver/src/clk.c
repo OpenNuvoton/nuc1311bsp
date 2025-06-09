@@ -556,7 +556,11 @@ lexit:
 
     /* Apply default PLL setting and return */
     if(u32PllClkSrc == CLK_PLLCON_PLL_SRC_HXT)
+#if (__HXT == 12000000)
         CLK->PLLCON = 0xC22E; /* 48MHz */
+#else
+        CLK->PLLCON = CLK_PLLCON_48MHz_HXT; /* 48MHz */
+#endif
     else
         CLK->PLLCON = 0x8D66F; /* 48.06498462MHz */
 
@@ -614,7 +618,7 @@ uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
   * @param[in]  u32Count is System Tick reload value. It could be 0~0xFFFFFF.
   * @return     None
   * @details    This function set System Tick clock source, reload value, enable System Tick counter and interrupt.
-  *             The register write-protection function should be disabled before using this function. 
+  *             The register write-protection function should be disabled before using this function.
   */
 void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count)
 {
@@ -628,7 +632,7 @@ void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count)
     else
     {
         /* Select System Tick external reference clock source */
-        CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_STCLK_S_Msk) | u32ClkSrc; 
+        CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_STCLK_S_Msk) | u32ClkSrc;
 
         /* Select System Tick clock source from external reference clock */
         SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
