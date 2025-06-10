@@ -12,6 +12,8 @@
 #ifndef __SPI_H__
 #define __SPI_H__
 
+#include "NUC1311.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -268,7 +270,7 @@ extern "C"
 
 /* Function prototype declaration */
 uint32_t SPI_Open(SPI_T *spi, uint32_t u32MasterSlave, uint32_t u32SPIMode, uint32_t u32DataWidth, uint32_t u32BusClock);
-void SPI_Close(SPI_T *spi);
+void SPI_Close(void);
 void SPI_ClearRxFIFO(SPI_T *spi);
 void SPI_ClearTxFIFO(SPI_T *spi);
 void SPI_DisableAutoSS(SPI_T *spi);

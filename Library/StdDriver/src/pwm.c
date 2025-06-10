@@ -34,7 +34,7 @@
  * @return The nearest unit time in nano second.
  * @details This function is used to Configure PWM capture and get the nearest unit time.
  */
-uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32UnitTimeNsec, uint32_t u32CaptureEdge)
+uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32UnitTimeNsec)
 {
     uint32_t u32Src;
     uint32_t u32PWMClockSrc;
@@ -285,11 +285,10 @@ void PWM_DisableADCTrigger(PWM_T *pwm, uint32_t u32ChannelNum)
  *                - PWM0 : PWM Group 0
  *                - PWM1 : PWM Group 1
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
- * @param[in] u32Condition This parameter is not used
  * @return None
  * @details This function is used to clear selected channel trigger ADC flag.
  */
-void PWM_ClearADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condition)
+void PWM_ClearADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum)
 {
     (pwm)->STATUS = (PWM_STATUS_ADCTRGF0_Msk << u32ChannelNum);
 }
@@ -718,11 +717,10 @@ uint32_t PWM_GetFaultBrakeIntFlag(PWM_T *pwm, uint32_t u32BrakeSource)
  *                - PWM0 : PWM Group 0
  *                - PWM1 : PWM Group 1
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5. Every two channels share the same setting.
- * @param[in] u32IntPeriodType Period interrupt type. This parameter is not used.
  * @return None
  * @details This function is used to enable period interrupt of selected channel.
  */
-void PWM_EnablePeriodInt(PWM_T *pwm, uint32_t u32ChannelNum,  uint32_t u32IntPeriodType)
+void PWM_EnablePeriodInt(PWM_T *pwm, uint32_t u32ChannelNum)
 {
     (pwm)->INTEN0 |= (PWM_INTEN0_PIEN0_Msk << ((u32ChannelNum >> 1) << 1));
 }

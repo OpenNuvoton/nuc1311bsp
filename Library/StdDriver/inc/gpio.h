@@ -12,6 +12,8 @@
 #ifndef __GPIO_H__
 #define __GPIO_H__
 
+#include "NUC1311.h"
+
 #ifdef __cplusplus
 extern "C"
 {

@@ -184,7 +184,7 @@ int32_t SH_Return(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0)
 #endif
 #else // defined(DEBUG_ENABLE_SEMIHOST)
 
-int32_t SH_Return(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0);
+int32_t SH_Return(void);
 
 #if defined( __ICCARM__ )
 __WEAK
@@ -226,9 +226,6 @@ uint32_t ProcessHardFault(uint32_t lr, uint32_t msp, uint32_t psp)
 #endif
 
     printf("  HardFault!\n\n");
-
-    /*
-    printf("  HardFault!\n\n");
     printf("r0  = 0x%x\n", sp[0]);
     printf("r1  = 0x%x\n", sp[1]);
     printf("r2  = 0x%x\n", sp[2]);
@@ -237,16 +234,15 @@ uint32_t ProcessHardFault(uint32_t lr, uint32_t msp, uint32_t psp)
     printf("lr  = 0x%x\n", sp[5]);
     printf("pc  = 0x%x\n", sp[6]);
     printf("psr = 0x%x\n", sp[7]);
-    */
 
     /* Or *sp to remove compiler warning */
-    while(1U|*sp){}
+    while(1){}
 
     return lr;
 }
 
 
-int32_t SH_Return(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0)
+int32_t SH_Return(void)
 {
     return 0;
 }

@@ -14,6 +14,8 @@
 #ifndef __SYSTEM_NUC1311_H
 #define __SYSTEM_NUC1311_H
 
+#include "stdint.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

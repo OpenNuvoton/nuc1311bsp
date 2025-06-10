@@ -12,6 +12,7 @@
 #ifndef __UART_H__
 #define __UART_H__
 
+#include "NUC1311.h"
 
 #ifdef __cplusplus
 extern "C"

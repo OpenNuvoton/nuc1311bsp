@@ -169,19 +169,19 @@ static void ReleaseIF(CAN_T *tCAN, uint32_t u32IfNo)
 static int can_update_spt(int sampl_pt, int tseg, int *tseg1, int *tseg2)
 {
     *tseg2 = tseg + 1 - (sampl_pt * (tseg + 1)) / 1000;
-    if (*tseg2 < TSEG2_MIN) {
-        *tseg2 = TSEG2_MIN;
+    if (*tseg2 < (int)TSEG2_MIN) {
+        *tseg2 = (int)TSEG2_MIN;
     } else {
     }
 
-    if (*tseg2 > TSEG2_MAX) {
-        *tseg2 = TSEG2_MAX;
+    if (*tseg2 > (int)TSEG2_MAX) {
+        *tseg2 = (int)TSEG2_MAX;
     } else {
     }
 
     *tseg1 = tseg - *tseg2;
-    if (*tseg1 > TSEG1_MAX) {
-        *tseg1 = TSEG1_MAX;
+    if (*tseg1 > (int)TSEG1_MAX) {
+        *tseg1 = (int)TSEG1_MAX;
         *tseg2 = tseg - *tseg1;
     } else {
     }
@@ -651,7 +651,7 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
     int tsegall, tseg = 0, tseg1 = 0, tseg2 = 0;
     int spt_error = 1000, spt = 0, sampl_pt;
     uint64_t clock_freq = (uint64_t)0;
-    uint32_t sjw = (uint32_t)1;
+    int32_t sjw = 1;
 
     CAN_EnterInitMode(tCAN);
 
@@ -678,7 +678,7 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
     }
 
     /* tseg even = round down, odd = round up */
-    for(tseg = (TSEG1_MAX + TSEG2_MAX) * 2ul + 1ul; tseg >= (TSEG1_MIN + TSEG2_MIN) * 2ul; tseg--)
+    for(tseg = (int)(TSEG1_MAX + TSEG2_MAX) * 2ul + 1ul; tseg >= (int)(TSEG1_MIN + TSEG2_MIN) * 2; tseg--)
     {
         tsegall = 1ul + tseg / 2ul;
         /* Compute all possible tseg choices (tseg=tseg1+tseg2) */
@@ -686,7 +686,7 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
         /* chose brp step which is possible in system */
         brp = (brp / BRP_INC) * BRP_INC;
 
-        if((brp < BRP_MIN) || (brp > BRP_MAX))
+        if((brp < (int)BRP_MIN) || (brp > (int)BRP_MAX))
         {
             continue;
         }
@@ -731,9 +731,9 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
 
     /* check for sjw user settings */
     /* bt->sjw is at least 1 -> sanitize upper bound to sjw_max */
-    if(sjw > SJW_MAX)
+    if(sjw > (int)SJW_MAX)
     {
-        sjw = SJW_MAX;
+        sjw = (int)SJW_MAX;
     }
     /* bt->sjw must not be higher than tseg2 */
     if(tseg2 < sjw)
@@ -745,7 +745,7 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
     u32BaudRate = clock_freq / (best_brp * (tseg1 + tseg2 + 1));
 
     tCAN->BTIME = ((uint32_t)(tseg2 - 1ul) << CAN_BTIME_TSEG2_Pos) | ((uint32_t)(tseg1 - 1ul) << CAN_BTIME_TSEG1_Pos) |
-                  ((uint32_t)(best_brp - 1ul) & CAN_BTIME_BRP_Msk) | (sjw << CAN_BTIME_SJW_Pos);
+                  ((uint32_t)(best_brp - 1ul) & CAN_BTIME_BRP_Msk) | ((uint32_t)sjw << CAN_BTIME_SJW_Pos);
     tCAN->BRPE  = ((uint32_t)(best_brp - 1ul) >> 6) & 0x0Ful;
 
     /* printf("\n bitrate = %d \n", CAN_GetCANBitRate(tCAN)); */
@@ -955,6 +955,37 @@ int32_t CAN_SetRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32IDType, uint3
     uint32_t u32TimeOutCount = 0;
 
     while(CAN_SetRxMsgObj(tCAN, u32MsgNum, u32IDType, u32ID, TRUE) == FALSE)
+    {
+        u32TimeOutCount++;
+
+        if(u32TimeOutCount >= 0x10000000) return FALSE;
+    }
+
+    return TRUE;
+}
+
+/**
+  * @brief The function is used to configure a receive message object and mask.
+  *
+  * @param[in] tCAN The pointer to CAN module base address.
+  * @param[in] u32MsgNum Specifies the Message object number from 0 to 31.
+  * @param[in] u32IDType Specifies the identifier type of the frames that will be transmitted. Valid values are:
+  *                      - CAN_STD_ID: The 11-bit identifier.
+  *                      - CAN_EXT_ID: The 29-bit identifier.
+  * @param[in] u32ID Specifies the identifier used for acceptance filtering.
+  * @paran[in} u32IDMask The value to be used to mask the CAN ID.
+	*
+  * @retval FALSE No useful interface.
+  * @retval TRUE Configure a receive message object success.
+  *
+  * @details If the RxIE bit (CAN_IFn_MCON[10]) is set, the IntPnd bit (CAN_IFn_MCON[13])
+  *          will be set when a received Data Frame is accepted and stored in the Message Object.
+  */
+int32_t CAN_SetRxMsgAndMsk(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32IDType, uint32_t u32ID, uint32_t u32IDMask)
+{
+		uint32_t u32TimeOutCount = 0;
+
+    while(CAN_SetRxMsgObjAndMsk(tCAN, u32MsgNum, u32IDType, u32ID, u32IDMask, TRUE) == FALSE)
     {
         u32TimeOutCount++;
 

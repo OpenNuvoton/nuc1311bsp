@@ -11,6 +11,8 @@
 #ifndef __PWM_H__
 #define __PWM_H__
 
+#include "NUC1311.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -259,7 +261,15 @@ extern "C"
  * \hideinitializer
  */
 #define PWM_SET_CMR(pwm, u32ChannelNum, u32CMR) ((pwm)->CMPDAT[(u32ChannelNum)] = (u32CMR))
-
+/**
+ * @brief This macro set the duty cycle value of the selected PWM channel
+ * @param[in] pwm The pointer of the specified PWM module
+ * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
+ * @param[in] u32Duty duty cycle value of specified PWM channel. Valid values are between 0~0xFFFF
+ * @return None
+ * @note Equivalent to the PWM_SET_CMR() macro. Created to improve understandability.
+ */
+#define PWM_SET_DUTY(pwm, u32ChannelNum, u32Duty) PWM_SET_CMR(pwm, u32ChannelNum, u32Duty)
 /**
  * @brief This macro set the duty cycle value of the selected PWM channel
  * @param[in] pwm The pointer of the specified PWM module
@@ -282,7 +292,15 @@ extern "C"
  * \hideinitializer
  */
 #define PWM_SET_CNR(pwm, u32ChannelNum, u32CNR)  ((pwm)->PERIOD[(((u32ChannelNum) >> 1) << 1)] = (u32CNR))
-
+/**
+ * @brief This macro set the period of the selected PWM channel
+ * @param[in] pwm The pointer of the specified PWM module
+ * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
+ * @param[in] u32Period Period of specified PWM channel. Valid values are between 0~0xFFFF
+ * @return None
+ * @note Equivalent to the PWM_SET_CNR() macro. Created to improve understandability.
+ */
+#define PWM_SET_PERIOD(pwm, u32ChannelNum, u32Period) PWM_SET_CNR(pwm, u32ChannelNum, u32Period)
 /**
  * @brief This macro set the period of the selected PWM channel
  * @param[in] pwm The pointer of the specified PWM module
@@ -405,14 +423,14 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /* Define PWM functions prototype                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
-uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32UnitTimeNsec, uint32_t u32CaptureEdge);
+uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32UnitTimeNsec);
 uint32_t PWM_ConfigOutputChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Frequency, uint32_t u32DutyCycle);
 void PWM_Start(PWM_T *pwm, uint32_t u32ChannelMask);
 void PWM_Stop(PWM_T *pwm, uint32_t u32ChannelMask);
 void PWM_ForceStop(PWM_T *pwm, uint32_t u32ChannelMask);
 void PWM_EnableADCTrigger(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condition);
 void PWM_DisableADCTrigger(PWM_T *pwm, uint32_t u32ChannelNum);
-void PWM_ClearADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condition);
+void PWM_ClearADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum);
 uint32_t PWM_GetADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum);
 void PWM_EnableFaultBrake(PWM_T *pwm, uint32_t u32ChannelMask, uint32_t u32LevelMask, uint32_t u32BrakeSource);
 void PWM_EnableCapture(PWM_T *pwm, uint32_t u32ChannelMask);
@@ -435,7 +453,7 @@ void PWM_EnableFaultBrakeInt(PWM_T *pwm, uint32_t u32BrakeSource);
 void PWM_DisableFaultBrakeInt(PWM_T *pwm, uint32_t u32BrakeSource);
 void PWM_ClearFaultBrakeIntFlag(PWM_T *pwm, uint32_t u32BrakeSource);
 uint32_t PWM_GetFaultBrakeIntFlag(PWM_T *pwm, uint32_t u32BrakeSource);
-void PWM_EnablePeriodInt(PWM_T *pwm, uint32_t u32ChannelNum,  uint32_t u32IntPeriodType);
+void PWM_EnablePeriodInt(PWM_T *pwm, uint32_t u32ChannelNum);
 void PWM_DisablePeriodInt(PWM_T *pwm, uint32_t u32ChannelNum);
 void PWM_ClearPeriodIntFlag(PWM_T *pwm, uint32_t u32ChannelNum);
 uint32_t PWM_GetPeriodIntFlag(PWM_T *pwm, uint32_t u32ChannelNum);

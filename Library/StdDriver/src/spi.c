@@ -139,11 +139,10 @@ uint32_t SPI_Open(SPI_T *spi,
 
 /**
   * @brief  Disable SPI controller.
-  * @param[in]  spi The pointer of the specified SPI module.
   * @return None
   * @details This function will reset SPI controller.
   */
-void SPI_Close(SPI_T *spi)
+void SPI_Close(void)
 {
     /* Reset SPI */
     SYS->IPRSTC2 |= SYS_IPRSTC2_SPI0_RST_Msk;

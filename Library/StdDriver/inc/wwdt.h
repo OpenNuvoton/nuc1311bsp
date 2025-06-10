@@ -11,6 +11,8 @@
 #ifndef __WWDT_H__
 #define __WWDT_H__
 
+#include "NUC1311.h"
+
 #ifdef __cplusplus
 extern "C"
 {
