@@ -143,16 +143,16 @@ int32_t main(void)
     printf("Boot from 0\n");
 #endif
 #if defined(__BOOT0__)
-    printf("Boot from 0x1000\n");
-#endif
-#if defined(__BOOT1__)
     printf("Boot from 0x2000\n");
 #endif
+#if defined(__BOOT1__)
+    printf("Boot from 0x4000\n");
+#endif
 #if defined(__BOOT2__)
-    printf("Boot from 0x3000\n");
+    printf("Boot from 0x6000\n");
 #endif
 #if defined(__BOOT3__)
-    printf("Boot from 0x4000\n");
+    printf("Boot from 0x8000\n");
 #endif
 
 #if defined(__ICCARM__) || defined(__GNUC__)

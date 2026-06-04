@@ -45,6 +45,19 @@ STR_CANMSG_T rrMsg;
 volatile uint8_t u8CAN_PackageFlag = 0, u8CAN_AckFlag = 0;
 uint32_t Chip_EndAddress = 0;
 
+/* Add implementations to fix linker warnings from the newlib-nano C library in VSCode-GCC14.3.1 */
+void _read_r(void) {}
+void _write_r(void) {}
+int _close(int file)
+{
+    return -1;
+}
+
+int _lseek(int file, int ptr, int dir)
+{
+    return 0;
+}
+
 /*---------------------------------------------------------------------------------------------------------*/
 /* ISR to handle CAN interrupt event                                                                       */
 /*---------------------------------------------------------------------------------------------------------*/
